@@ -1,0 +1,29 @@
+@import "mixins";
+@import "variables";
+@import "Header";
+@import "modelComponent";
+
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.Wrapper {
+
+}
+
+.Components {
+  position: absolute;
+  z-index: 2;
+}
+
+.Background {
+  position: absolute;
+  z-index: 1;
+}
+
+

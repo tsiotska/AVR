@@ -1,0 +1,5 @@
+@import "mixins";
+
+.nav-list{
+ @include flex-space-around;
+}
