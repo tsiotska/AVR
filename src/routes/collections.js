@@ -1,5 +1,5 @@
 const router = require('express').Router();
-import * as authorModel from '../CRUDs/authorModel';
+import * as authorModel from '../CRUDs/modelCRUD';
 
 router.get('/authors', (req, res) => {
   authorModel.getAuthorList()
@@ -12,7 +12,7 @@ router.get('/authors', (req, res) => {
 });
 
 router.post('/author', (req, res) => {
-  authorModel.createAuthor(req)
+  authorModel.createModel(req)
     .then(item => {
       res.send("item saved to database");
     })
@@ -22,7 +22,7 @@ router.post('/author', (req, res) => {
 });
 
 router.delete('/author', (req, res) => {
-  authorModel.deleteAuthor(req)
+  authorModel.deleteModel(req)
     .then(item => {
       res.send("Author is deleted");
     })
