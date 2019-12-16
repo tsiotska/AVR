@@ -1,22 +1,27 @@
-@import "mixins";
-@import "variables";
-@import "Header";
-@import "modelComponent";
-@import "Dropzone.scss";
+@import "source/mixins";
+@import "source/variables";
+@import "components/Header";
+@import "components/modelComponent";
+@import "components/Dropzone";
+@import "components/loading";
+@import "components/Home";
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
   padding: 0;
   margin: 0;
- // overflow: hidden;
+  overflow: hidden;
 }
 
 .Wrapper {
-
+  width: 100%;
+  height: 100%;
 }
 
 .Components {
+  width: 100%;
+  height: 100%;
   position: absolute;
   z-index: 2;
 }
@@ -33,3 +38,9 @@ body {
   margin: 30px;
 }
 
+.centeredRow{
+  @include flex-center;
+  flex-direction: column;
+  padding: 30px;
+  margin: 30px;
+}

@@ -1,0 +1,19 @@
+@import "../source/mixins";
+@import "../source/variables";
+
+.homeWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.modelIntroductionBlock {
+  @include flex-space-around;
+  padding: 30px;
+}
+
+.text-label {
+  @include flex-center;
+  font-family: $font-stack;
+  font-size: 24px;
+  color: white;
+}

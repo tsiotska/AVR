@@ -1,6 +1,6 @@
 import React from 'react';
 import Scene from '../../SceneRenderer/Scene';
-import LoadingPage from '../../SceneRenderer/LoadingPage'
+import LoadingPage from '../../Loading/LoadingPage'
 import {FormGroup, Label, Input, Button} from 'reactstrap';
 import axios from "axios";
 

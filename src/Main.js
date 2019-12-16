@@ -1,50 +1,65 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import axios from 'axios';
-import Background from './Background/background';
-import Header from '../src/Сomponents/Header/Header';
-import Dropzone from './Сomponents/Dropzone/Dropzone';
-import ViewModel from './Сomponents/Model/Model';
+import Header from './Elements/Header/Header';
+import Home from './Pages/Home';
+import Dropzone from './Elements/Dropzone/Dropzone';
+import Loading from './Loading/LoadingPage';
+import * as THREE from 'three'
+
 
 class Main extends React.Component {
+  constructor(props){
+    super(props);
+    this.yourElement = React.createRef();
+  }
 
   componentDidMount() {
-    /*axios.post('/api/models/upload/model', ).then((res) => {
-      console.log(res);
-    })*/
+    this.vantaEffect = VANTA.WAVES({
+      el: this.yourElement.current,
+      THREE: THREE
+    })
+  }
+
+  componentWillUnmount() {
+    if (this.vantaEffect) {
+      this.vantaEffect.destroy()
+    }
   }
 
   render() {
     return (
-      <div className="Wrapper">
+      <div className="Wrapper" >
+        <div className='Background' ref={this.yourElement}/>
+
         <div className="Components">
           <Router>
             <Header/>
-            <Switch>
 
+            <Switch>
               <Route path="/">
-                <Dropzone/>
-                <ViewModel/>
+                <Home/>
               </Route>
 
 
               <Route path="/news">
 
               </Route>
+
               <Route path="/popular">
 
               </Route>
+
+              <Route path="/cabinet">
+                <Loading/>
+                <Dropzone/>
+              </Route>
+
             </Switch>
           </Router>
         </div>
-
       </div>
     );
   }
 }
-
-/* <div className="Background">
-          <Background/>
-        </div>*/
 
 export default Main;

@@ -1,0 +1,12 @@
+@import "../source/mixins";
+@import '../source/variables';
+
+.nav-wrapper{
+ background-color: $primary-color;
+ width: 100vw;
+ height: 40px;
+}
+
+.nav-list{
+ @include flex-space-around;
+}

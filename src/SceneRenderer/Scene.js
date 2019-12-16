@@ -5,12 +5,12 @@ import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader'
 import OrbitControls from 'three-orbitcontrols';
 
-const side1 = require('../assets/skybox/skybox1.jpg');
-const side2 = require('../assets/skybox/skybox2.jpg');
-const side3 = require('../assets/skybox/skybox3.jpg');
-const side4 = require('../assets/skybox/skybox4.jpg');
-const side5 = require('../assets/skybox/skybox5.jpg');
-const side6 = require('../assets/skybox/skybox6.jpg');
+//const side1 = require('../assets/skybox/skybox1.jpg');
+//const side2 = require('../assets/skybox/skybox2.jpg');
+//const side3 = require('../assets/skybox/skybox3.jpg');
+//const side4 = require('../assets/skybox/skybox4.jpg');
+//const side5 = require('../assets/skybox/skybox5.jpg');
+//const side6 = require('../assets/skybox/skybox6.jpg');
 
 class ThreeScene extends React.Component {
   constructor(props) {
@@ -88,12 +88,12 @@ class ThreeScene extends React.Component {
     this.controls.enableZoom = true;
   };
 
-  createSkybox = () => {
+  /*createSkybox = () => {
     let textureLoader = new this.THREE.CubeTextureLoader();
     this.scene.background = textureLoader.load(
       [side4, side2, side1, side6, side3, side5]
     );
-  };
+  };*/
 
   loadModel = () => {
     console.log(this.props.model);
@@ -182,8 +182,8 @@ class ThreeScene extends React.Component {
 }
 
 const elementStyle = {
-  width: '70vw',
-  height: '80vh'
+  width: '100%',
+  height: '100%'
 };
 
 export default ThreeScene
