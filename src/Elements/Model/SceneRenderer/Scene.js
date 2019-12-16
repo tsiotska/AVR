@@ -84,7 +84,7 @@ class ThreeScene extends React.Component {
   setControls = () => {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
-    this.controls.campingFactor = 0.01;
+    this.controls.campingFactor = 0.001;
     this.controls.enableZoom = true;
   };
 
@@ -101,19 +101,19 @@ class ThreeScene extends React.Component {
     loader.load('/api/models/gltf?root=' + this.props.model, (gltf) => {
 
         this.object = gltf.scene;
-        var bbox = new THREE.Box3().setFromObject(this.object);
-        var cent = bbox.getCenter(new THREE.Vector3(0, 0, 0));
-        var size = bbox.getSize(new THREE.Vector3(1, 1, 1));
+        const bbox = new this.THREE.Box3().setFromObject(this.object);
+
+        const center = new this.THREE.Vector3();
+        const size = bbox.getSize(new this.THREE.Vector3(1, 1, 1));
 
         //Rescale the object to normalized space
-        var maxAxis = Math.max(size.x, size.y, size.z);
+        const maxAxis = Math.max(size.x, size.y, size.z);
         this.object.scale.multiplyScalar(1.0 / maxAxis);
         bbox.setFromObject(this.object);
-        bbox.getCenter(cent);
+        bbox.getCenter(center);
+        this.object.position.sub(center);
+        this.object.rotation.y = Math.PI;
         bbox.getSize(size);
-        //Reposition to 0,halfY,0
-        this.object.position.copy(cent).multiplyScalar(-1);
-        this.object.position.y -= (size.y * 0.5);
         this.scene.add(this.object);
 
 
@@ -154,7 +154,7 @@ class ThreeScene extends React.Component {
 
   animate = () => { //Розкоментуй щоб крутилось або навпаки
     //this.object.rotation.x += 0.01;
-     this.object.rotation.y -= 0.005;
+    this.object.rotation.y -= 0.005;
     //this.mixer.update(100) Анімация єслі
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate)
@@ -183,7 +183,7 @@ class ThreeScene extends React.Component {
 
 const elementStyle = {
   width: '100%',
-  height: '100%'
+  height: '80vh'
 };
 
 export default ThreeScene

@@ -7,20 +7,26 @@ class Header extends React.Component {
     <div className="nav-wrapper">
       <div className="nav-list">
         <div>
+          <Link to="/"> Home </Link>
+        </div>
 
-        </div>
-          <Link to="/admin"> Admin Lite</Link>
-        </div>
         <div>
           <Link to="/collection"> Collections</Link>
         </div>
+
         <div>
           <Link to="/news"> News </Link>
         </div>
+
         <div>
-          <Link to="/popular"> Popular Searches </Link>
+          <Link to="/login"> Sign In</Link>
+        </div>
+
+        <div>
+          <Link to="/signup"> Sign Up </Link>
         </div>
       </div>
+    </div>
 }
 
 export default Header;
