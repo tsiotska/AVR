@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/public', express.static('public'));
 
-app.get('/index', function (req, res) {
+app.get('/', function (req, res) {
   res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/public/index.html'));
 });
 app.get('/bundle.js', function(req,res){
