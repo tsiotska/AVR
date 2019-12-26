@@ -2,11 +2,46 @@
 @import '../source/variables';
 
 .nav-wrapper{
- background-color: $primary-color;
+ background-color: rgba(0, 0, 0, 0.7);
  width: 100vw;
- height: 40px;
+ height: 50px;
+}
+
+.routeText{
+ color: white;
+ text-decoration: none;
+ opacity: 0.7;
+}
+
+.routeText:hover{
+ opacity: 1;
+}
+
+.logBtnGroup{
+ display: flex;
+ flex-direction: row;
+}
+
+.SignIn, .SignUp{
+ @include button;
+ text-align: center;
+ height: 25px;
+ width: 110px;
+
+ margin-left: 15px;
+ margin-bottom: 15px;
+}
+
+.SignIn:active, .SignUp:active{
+ @include buttonActive;
+}
+
+.SignIn:after, .SignUp:after{
+
 }
 
 .nav-list{
  @include flex-space-around;
+ height: 100%;
+ width: 100%;
 }

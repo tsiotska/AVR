@@ -14,7 +14,6 @@ class Model extends React.Component {
     };
   }
 
-
   componentDidMount() {
     axios.get('/api/models/list').then((res) => {
       if (res.data) {

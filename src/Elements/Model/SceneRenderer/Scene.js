@@ -20,14 +20,16 @@ class ThreeScene extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("Updating");
-    this.changeModel();
-    this.setCamera();
-    this.setControls();
-    this.loadModel();
+    if(prevProps.model !== this.props.model) {
+      console.log("Updating scene...");
+      this.changeModel();
+      this.setCamera();
+      this.setControls();
+      this.loadModel();
+    }
   }
 
-  componentDidMount(nextProps, nextState, nextContext) {
+  componentDidMount() {
     this.scene = new this.THREE.Scene();
     this.width = this.ref.clientWidth;
     this.height = this.ref.clientHeight;

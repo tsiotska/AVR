@@ -1,14 +1,13 @@
 import React from 'react';
 import * as THREE from 'three'
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {connect} from "react-redux";
 
-import AdminPanel from "./Pages/AdminPanel";
+import axios from "axios";
+import CollectionPage from "./Pages/CollectionPage"
+import ModalWindow from "./Elements/ModalWindow/modalWindow"
 import Header from './Elements/Header/Header';
 import Home from './Pages/Home';
-import Dropzone from './Elements/Dropzone/Dropzone';
-import Login from './Pages/Authorization/login';
-import SignUp from './Pages/Authorization/registration';
-import Loading from './Loading/LoadingPage';
 import PrivateRoute from './Elements/PrivateRoute/privateRoute';
 
 
@@ -21,9 +20,21 @@ class Main extends React.Component {
   componentDidMount() {
     this.vantaEffect = VANTA.WAVES({
       el: this.yourElement.current,
+      color: 0x886700,
       THREE: THREE
-    })
+    });
+
+    let token = localStorage.getItem("token");
+    if (token) {
+      axios.get("api/users/profile", {headers: {'Authorization': token}})
+        .then((response) => {
+            console.log(response);
+            this.props.setUsersData(response.data.user, response.data.auth);
+          }
+        )
+    }
   }
+
 
   componentWillUnmount() {
     if (this.vantaEffect) {
@@ -40,31 +51,26 @@ class Main extends React.Component {
           <Router>
             <Header/>
 
-            <Switch>
-              <Route exact path="/">
-                <Home/>
-              </Route>
+            {this.props.isModalOpened ?
+              <ModalWindow/>
+              : null}
 
+
+            <Switch>
+
+              <Route exact path="/">
+                {this.props.auth ? <Redirect to="/cabinet"/> : <Home/>}
+              </Route>
 
               <Route exact path="/news">
 
               </Route>
 
-              <Route exact path="/collection">
-
+              <Route exact path="/collections">
+                <CollectionPage/>
               </Route>
 
-              <Route exact path="/login">
-                <Login/>
-              </Route>
-
-              <Route exact path="/signup">
-                <SignUp/>
-              </Route>
-
-              <PrivateRoute exact path="/cabinet" component={AdminPanel}>
-                <Dropzone/>
-              </PrivateRoute>
+              <PrivateRoute exact path="/cabinet"/>
 
             </Switch>
           </Router>
@@ -74,4 +80,15 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  isModalOpened: state.reducer.isModalOpened,
+  auth: state.reducer.auth
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUsersData: (data, auth) => {
+    dispatch({type: "SET_USER_DATA", data: data, auth: auth})
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

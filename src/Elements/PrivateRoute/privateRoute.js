@@ -1,14 +1,29 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
+import {connect} from "react-redux";
+import AdminPanel from "../../Pages/AdminPanel";
 
-const PrivateRoute = ({component: Component, ...rest}) => {
-  return (
-    <Route {...rest} render={props => (
-      localStorage.getItem("authToken") ?
-        <Component {...props} />
-        : <Redirect to="/login" />
-    )} />
-  );
-};
+class PrivateRoute extends React.Component {
+  render() {
+    return (
+      <Route render={props => (
+        this.props.auth ?
+          <AdminPanel {...props} />
+          : <Redirect to={"/"}/>
+       // this.props.openLogin()
+      )}/>
+    );
+  }
+}
 
-export default PrivateRoute;
+const mapStateToProps = (state) => ({
+  auth: state.reducer.auth
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openLogin: (toggle) => {
+    dispatch({type: "OPEN_LOGIN_DEFINITELY"})
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);
