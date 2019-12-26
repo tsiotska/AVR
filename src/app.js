@@ -41,14 +41,6 @@ app.use((req, res, next) => {
 
 app.use('/static', express.static(path.join(__dirname, '../client/build/')));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname+'/../client/public/index.html') , function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }})
-});
-
-
 app.get('/bundle.js', function (req, res) {
   res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/build/bundle.js'), function(err) {
     if (err) {
@@ -60,6 +52,7 @@ app.get('/bundle.js', function (req, res) {
 app.get('/manifest.json', function (req, res) {
   res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/public/manifest.json'));
 });
+
 app.get('/style', function (req, res) {
   res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/build/style.css'));
 });
@@ -69,6 +62,13 @@ app.use('/api/users', users);
 app.use('/api/models', models);
 app.use('/api/collections', collections);
 
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname+'/../client/public/index.html') , function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }})
+});
 
 async function start() {
   setUpConnection()

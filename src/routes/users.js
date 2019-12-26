@@ -4,10 +4,16 @@ const router = require('express').Router();
 import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import config from '../../config.js';
-import {updateUser, findUser, createUser, hashPassword, comparePassword} from "../CRUDs/userCRUD";
+import {
+  updateUser,
+  findUserByName,
+  findUserByToken,
+  createUser,
+  hashPassword,
+  comparePassword
+} from "../CRUDs/userCRUD";
 
-const User = mongoose.model('userSchema');
-
+import {User} from '../schemes/userSchema';
 
 //validation schemas
 const registrationSchema = Joi.object().keys({
@@ -22,6 +28,7 @@ const loginSchema = Joi.object().keys({
   password: Joi.string().regex(/^[a-zA-Z0-9]{6,30}$/).required(),
 });
 
+
 router.post(('/register'), async (req, res, next) => {
   try {
     console.log(req.body)
@@ -33,11 +40,10 @@ router.post(('/register'), async (req, res, next) => {
       return
     }
 
-    const user = await User.findOne({email: result.value.email});
-    console.log("Already in use!")
-    console.log(user)
+//FindUser
+    const user = await User.findOne({username: result.value.username});
     if (user) {
-      res.json({message: 'Email is already in use.'});
+      res.json({registered: false, message: 'Email is already in use.'});
       return
     }
 
@@ -45,16 +51,15 @@ router.post(('/register'), async (req, res, next) => {
     delete result.value.confirmationPassword;
     result.value.password = hash;
 
+    //createUser
     const newUser = await new User(result.value);
     await newUser.save();
+
     console.log(newUser);
 
-    const token = jwt.sign({id: user._id}, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
-    });
     res.json({
-      token: token, username: newUser.value.username, email: newUser.value.email,
-      message: 'Registration successfully, go ahead and login.', file
+      registered: true,
+      message: 'Registration successfully, go ahead and login.'
     })
 
   } catch (error) {
@@ -64,45 +69,38 @@ router.post(('/register'), async (req, res, next) => {
 
 
 router.post(('/login'), async (req, res, next) => {
-  try {
+
     const result = Joi.validate(req.body, loginSchema);
 
     if (result.error) {
       res.json({message: "Your username or password is incorrect!"});
       return
     }
-    console.log("Loggining...")
-    console.log("Try to find " + result.value.username)
 
+    let user = await findUserByName(result.value.username);
 
-    const user = await User.find({username: result.value.username});
-    console.log(user);
-    if (user && await comparePassword(req.body.password, user.password)) {
-      console.log('Okay, go! Creating token...');
+    if (user.length !== 0 && await comparePassword(req.body.password, user[0].password)) {
 
-      const token = jwt.sign({id: user._id}, config.secret, {
+      const token = await jwt.sign({id: user[0]._id}, config.secret, {
         expiresIn: 86400 // expires in 24 hours
       });
 
-      updateUser(user, token);
-      const user = await User.find({username: result.value.username});
-      console.log(token);
-      console.log(user);
-
+      await updateUser(user, token);
+      const updatedUser = await findUserByName(result.value.username);
 
       res.json({
         auth: true,
         token: token,
         message: 'You are accepted!',
-        user: {username: user.username, email: user.email}
+        user: {username: updatedUser[0].username, email: updatedUser[0].email}
       });
-    } else {//
+
+    } else {
       res.json({auth: false, token: null, message: 'Your username or password is incorrect!'});
     }
-  } catch (e) {
-    console.log(e);
   }
-});
+);
+
 
 function isTokenExpired(token) {
   try {
@@ -115,22 +113,23 @@ function isTokenExpired(token) {
   }
 }
 
+
 router.get('/profile', async (req, res) => {
   let token = req.headers.authorization;
   console.log(token);
 
-  const user = await User.find({token: token});
+  const user = await findUserByToken(token);
 
   console.log("Well... You are...");
   console.log(user);
 
-  //console.log(isTokenExpired(token));
+  console.log(isTokenExpired(token));
   if (!isTokenExpired(token)) {
     console.log("Let go...");
     res.send({
       auth: true,
       token: token,
-      user: {username: user.username, email: user.email}
+      user: {username: user[0].username, email: user[0].email}
     })
   } else {
     console.log("Token is expired!");
@@ -140,11 +139,11 @@ router.get('/profile', async (req, res) => {
       user: {username: null, email: null}
     })
   }
-  // res.send({ auth: false, token: null });
 });
 
+
 router.get('/logout', function (req, res) {
-  res.send({auth: false, token: null});
+  res.send({auth: false, token: null, user: {username: null, email: null}});
 });
 
 module.exports = router;

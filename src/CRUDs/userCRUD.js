@@ -2,10 +2,13 @@ import mongoose from 'mongoose';
 import '../schemes/userSchema';
 import bcrypt from "bcryptjs";
 
-const user = mongoose.model('userSchema');
+const user = mongoose.model('user');
 
-export const findUser = (username) => {
-  return  user.find({username: username})
+export const findUserByName = (username) => {
+  return user.find({username: username});
+};
+export const findUserByToken = (token) => {
+  return user.find({token: token});
 };
 
 export const createUser = (req) => {
@@ -20,8 +23,7 @@ export const createUser = (req) => {
 };
 
 export const updateUser = (data, token) => {
-
-  return user.update({username: data.username}, {$set: {token: token}});
+  return user.updateOne({username: data[0].username}, {}).set({ token: token, updatedAt: new Date() });
 };
 
 export const hashPassword = async (password) => {
