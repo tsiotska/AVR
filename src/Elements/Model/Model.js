@@ -22,7 +22,6 @@ class Model extends React.Component {
           modelsNames: res.data,
           readyToRender: true
         });
-        console.log(this.state)
       }
     }).catch((err) => console.log(err))
   }
@@ -49,7 +48,7 @@ class Model extends React.Component {
         </FormGroup>
 
         <div className="scene">
-          {this.state.readyToRender ? <Scene model={this.state.currentModel}/> : <LoadingPage/>}
+          {this.state.readyToRender ? <Scene link={'/api/models/gltf?root='+ this.state.currentModel}/> : <LoadingPage/>}
         </div>
 
       </div>

@@ -1,47 +1,112 @@
 @import "../source/mixins";
 @import '../source/variables';
 
-.nav-wrapper{
- background-color: rgba(0, 0, 0, 0.7);
- width: 100vw;
- height: 50px;
+.nav-wrapper {
+  width: 100%;
+  height: 85px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 65% 45%, 0% 100%);
+  position: absolute;
+  z-index: 4;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
-.routeText{
- color: white;
- text-decoration: none;
- opacity: 0.7;
+//play with opacity
+.nav-wrapper:before {
+  position: absolute;
+  content: "";
+  background-image: url("https://bnoengenharia.com.br/wp-content/uploads/2018/03/header-background-indexed.png");
+  width: 100%;
+  opacity: 1;
+  height: 100%;
 }
 
-.routeText:hover{
- opacity: 1;
+.nav-list {
+  position: relative;
+  z-index: 2;
+
+  @include flex-space-between;
+  height: 100%;
+  width: 100%;
 }
 
-.logBtnGroup{
- display: flex;
- flex-direction: row;
+.blockOfRoutes {
+  @include flex-space-around;
+  height: 100%;
+  width: 50%;
+  padding-right: 20%;
+  padding-bottom: 2%;
 }
 
-.SignIn, .SignUp{
- @include button;
- text-align: center;
- height: 25px;
- width: 110px;
-
- margin-left: 15px;
- margin-bottom: 15px;
+.logBtnGroup {
+  @include flex-space-around;
+  height: 100%;
+  width: 30%;
+  padding-left: 6%;
+  padding-bottom: 1%;
 }
 
-.SignIn:active, .SignUp:active{
- @include buttonActive;
+.simpleButton, .SignIn, .SignUp {
+  @include button;
 }
 
-.SignIn:after, .SignUp:after{
-
+.activateButton {
+  @include buttonActive;
 }
 
-.nav-list{
- @include flex-space-around;
- height: 100%;
- width: 100%;
+.simpleButton:before, .SignIn:before, .SignUp:before {
+  @include buttonBefore;
 }
+
+.simpleButton:hover:before, .SignIn:hover:before, .SignUp:hover:before {
+  @include buttonBeforeHovered;
+}
+
+.simpleButton:hover, .SignIn:hover, .SignUp:hover {
+  @include buttonHovered;
+}
+
+@media (max-width: 720px) {
+  .nav-wrapper {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 35% 65%, 0% 100%);
+  }
+
+  .blockOfRoutes {
+    @include flex-column-space-around;
+    height: auto;
+    width: 100%;
+    padding-top: 20%;
+    padding-bottom: 30%;
+  }
+
+  @for $i from 1 to 4 {
+    .pullingBlocks:nth-child(#{$i}) {
+      display: flex;
+      position: relative;
+      animation: 1.2s * $i dropBlock;
+      -webkit-animation: 1.2s * $i dropBlock;
+    }
+  }
+
+  @keyframes dropBlock {
+    from {
+      right: 1000%;
+    }
+    to {
+      right: 0;
+    }
+  }
+  .logBtnGroup {
+    @include flex-space-around;
+    width: 100%;
+  }
+
+  .SignIn, .SignUp {
+    width: 40%;
+  }
+}
+
+

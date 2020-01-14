@@ -18,8 +18,10 @@ const modalStyles = theme => ({
     width: '500px',
     zIndex: '5',
     position: 'relative',
-    backgroundColor: '#f5f5f5',
-    border: '3px solid #FCDE00',
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    borderWidth: 4,
+    borderStyle: 'solid',
+    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1',
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
   },
   button: {
@@ -34,8 +36,9 @@ const modalStyles = theme => ({
     justifyContent: 'center'
   },
   inputLabel: {
+    color: 'white !important',
     "&.focused": {
-      color: '#FCDE00 !important'
+      color: '#de1212 !important'
     },
   },
 
@@ -45,8 +48,9 @@ const modalStyles = theme => ({
     marginRight: theme.spacing.unit,
   },
   notchedOutline: {
-    borderColor: '#FCDE00  !important',
-    borderWidth: 2,
+    borderWidth: 4,
+    borderStyle: 'solid !important',
+    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1 !important',
   },
   infoText: {
     color: '#c7c7c7',
@@ -57,8 +61,10 @@ const modalStyles = theme => ({
     color: 'red'
   },
   href: {
+    color: 'white',
     textDecoration: 'none',
     '&:hover': {
+      color: 'black',
       textDecoration: 'underline',
     }
   }
@@ -170,9 +176,9 @@ class LoginWindow extends Component {
             <a className={classes.href} href="#"> Forgot password? </a>
           </Grid>
           <Grid className={classes.row}>
-            <Button onClick={this.checkAuth} variant="contained" className={classes.button}>
-                Log in
-            </Button>
+            <div onClick={this.checkAuth} className={classNames("simpleButton", classes.button)}>
+              Sign in
+            </div>
           </Grid>
 
           <Grid className={classes.row}>

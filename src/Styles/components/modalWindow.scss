@@ -1,0 +1,31 @@
+@import "../source/mixins";
+@import "../source/variables";
+
+.myModal {
+  position: fixed;
+  height: fit-content;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  overflow-y: auto;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+};
+
+.removeLine {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  justify-content: flex-end;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 85% 100%);
+  height: 60px;
+  width: 100%;
+  opacity: 0.7;
+  background: linear-gradient(45deg, $primary-color, $secondary-color);
+  cursor: move;
+};
+
+.closeButton {
+  margin-left: auto;
+  margin-right: 5px;
+  color: $primary-color;
+  cursor: pointer;
+};

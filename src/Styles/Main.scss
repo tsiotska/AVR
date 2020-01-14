@@ -6,9 +6,13 @@
 @import "components/loading";
 @import "components/Home";
 @import "components/Auth.scss";
+@import "components/Sidebar";
+@import "components/modalWindow";
+@import "../../node_modules/hamburgers/_sass/hamburgers/hamburgers";
 
 body {
-  font: 100% $font-stack;
+  font-family: $font-stack;
+  font-weight: $font-weight;
   color: $primary-color;
   padding: 0;
   margin: 0;
@@ -32,14 +36,14 @@ body {
   z-index: 1;
 }
 
-.centeredColumn{
+.centeredColumn {
   @include flex-center;
   flex-direction: column;
   padding: 30px;
   margin: 30px;
 }
 
-.centeredRow{
+.centeredRow {
   @include flex-center;
   flex-direction: column;
   padding: 30px;

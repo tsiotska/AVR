@@ -2,17 +2,40 @@
 @import "../source/variables";
 
 .homeWrapper {
+  position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.modelIntroductionBlock {
+.modelIntroductionWrapper {
   @include flex-space-around;
   padding: 30px;
 }
 
+//border: 2px solid red;
+.introBlock {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 30vw;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100%;
+}
+
 .text-label {
+  position: absolute;
   @include flex-center;
+  z-index: 2;
+  width: 70vw;
+  height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+
+  padding-left: 50px;
   font-family: $font-stack;
   font-size: 30px;
   color: white;

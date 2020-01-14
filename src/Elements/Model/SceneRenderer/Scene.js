@@ -20,8 +20,7 @@ class ThreeScene extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if(prevProps.model !== this.props.model) {
-      console.log("Updating scene...");
+    if (prevProps.link !== this.props.link) {
       this.changeModel();
       this.setCamera();
       this.setControls();
@@ -98,30 +97,34 @@ class ThreeScene extends React.Component {
   };*/
 
   loadModel = () => {
-    console.log(this.props.model);
     let loader = new GLTFLoader();
-    loader.load('/api/models/gltf?root=' + this.props.model, (gltf) => {
+    // console.log(this.xhrLink);
+    loader.load(this.xhrLink, (gltf) => {
 
-        this.object = gltf.scene;
-        const bbox = new this.THREE.Box3().setFromObject(this.object);
+        this.object = gltf;
+        const bbox = new this.THREE.Box3().setFromObject(this.object.scene);
 
         const center = new this.THREE.Vector3();
         const size = bbox.getSize(new this.THREE.Vector3(1, 1, 1));
 
         //Rescale the object to normalized space
         const maxAxis = Math.max(size.x, size.y, size.z);
-        this.object.scale.multiplyScalar(1.0 / maxAxis);
-        bbox.setFromObject(this.object);
+        this.object.scene.scale.multiplyScalar(1.0 / maxAxis);
+        bbox.setFromObject(this.object.scene);
         bbox.getCenter(center);
-        this.object.position.sub(center);
-        this.object.rotation.y = Math.PI;
+        this.object.scene.position.sub(center);
+        this.object.scene.rotation.y = Math.PI;
         bbox.getSize(size);
-        this.scene.add(this.object);
+        this.scene.add(this.object.scene);
 
 
-        if (gltf.animations) {
-          this.mixer = new this.THREE.AnimationMixer(this.object);
-          gltf.animations.forEach((clip) => {
+        console.log("Is there animation?")
+        console.log(this.object.animations)
+
+        if (this.object.animations) {
+          this.mixer = new THREE.AnimationMixer(this.object.scene);
+
+          this.object.animations.forEach((clip) => {
             this.mixer.clipAction(clip).play();
           });
         }
@@ -135,7 +138,7 @@ class ThreeScene extends React.Component {
   };
 
   changeModel = () => {
-    this.scene.remove(this.object);
+    this.scene.remove(this.object.scene);
   };
 
   destroy = () => {
@@ -145,7 +148,7 @@ class ThreeScene extends React.Component {
 
   start = () => {
     if (!this.frameId) {
-      //this.mixer.update(10)
+      this.mixer.update(0.01)
       this.frameId = requestAnimationFrame(this.animate)
     }
   };
@@ -154,10 +157,10 @@ class ThreeScene extends React.Component {
     cancelAnimationFrame(this.frameId)
   };
 
-  animate = () => { //Розкоментуй щоб крутилось або навпаки
-    //this.object.rotation.x += 0.01;
-    this.object.rotation.y -= 0.005;
-    //this.mixer.update(100) Анімация єслі
+  animate = () => {
+    //this.object.scene.rotation.x += 0.01;
+    this.object.scene.rotation.y -= 0.005;
+    this.mixer.update(0.01)
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate)
   };
@@ -185,7 +188,7 @@ class ThreeScene extends React.Component {
 
 const elementStyle = {
   width: '100%',
-  height: '80vh'
+  height: '100%'
 };
 
 export default ThreeScene

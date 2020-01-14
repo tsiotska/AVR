@@ -6,5 +6,8 @@ export const initialState = {
   isLogInOpened: false,
   currentWindow: "",
   left: "50vw",
-  top: "50vh"
+  top: "50vh",
+  isSidebarOpened: false,
+  activePage: window.location.pathname === "/" ? "home" : window.location.pathname,
+  pages: ["home", "collections", "news"],
 };

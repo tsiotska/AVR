@@ -8,6 +8,7 @@ import CollectionPage from "./Pages/CollectionPage"
 import ModalWindow from "./Elements/ModalWindow/modalWindow"
 import Header from './Elements/Header/Header';
 import Home from './Pages/Home';
+import Sidebar from './Elements/Header/Sidebar';
 import PrivateRoute from './Elements/PrivateRoute/privateRoute';
 
 
@@ -20,13 +21,14 @@ class Main extends React.Component {
   componentDidMount() {
     this.vantaEffect = VANTA.WAVES({
       el: this.yourElement.current,
-      color: 0x886700,
+      color: 0x1234a4,
       THREE: THREE
     });
 
     let token = localStorage.getItem("token");
+
     if (token) {
-      axios.get("api/users/profile", {headers: {'Authorization': token}})
+      axios.get("/api/users/profile", {headers: {'Authorization': token}})
         .then((response) => {
             console.log(response);
             this.props.setUsersData(response.data.user, response.data.auth);
@@ -50,6 +52,7 @@ class Main extends React.Component {
         <div className="Components">
           <Router>
             <Header/>
+            <Sidebar/>
 
             {this.props.isModalOpened ?
               <ModalWindow/>
@@ -82,6 +85,7 @@ class Main extends React.Component {
 
 const mapStateToProps = (state) => ({
   isModalOpened: state.reducer.isModalOpened,
+  isSidebarOpened: state.reducer.isSidebarOpened,
   auth: state.reducer.auth
 });
 

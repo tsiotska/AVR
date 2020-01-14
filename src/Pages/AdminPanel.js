@@ -7,7 +7,20 @@ class AdminPanel extends React.Component {
     return (
       <div className="panelWrapper">
         You are in your own cabinet
-        <Dropzone/>
+
+        <div> <button>Upload Model</button></div>
+
+        <div className="Wrapper">
+          <Dropzone/>
+
+          <div className="modelsInformationBlock">
+<div>
+  <p>Select category</p>
+</div>
+          </div>
+
+        </div>
+
       </div>
     );
   }

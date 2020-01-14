@@ -10,19 +10,15 @@ const reducer = (state = initialState, action) => {
         auth: action.auth,
       };
     case types.OPEN_MODAL_WINDOW: //Відкривати/закривати вікно
-      console.log(action.toggle);
-      console.log(state.currentWindow)
       if (action.toggle !== state.currentWindow) {
         return {
           ...state,
-          // [action.toggle]: !state[action.toggle],
           isModalOpened: true,
           currentWindow: action.toggle,
           left: "50vw",
           top: "50vh"
         }
       } else {
-        console.log("Modal is closed!")
         return {
           ...state,
           isModalOpened: false,
@@ -55,6 +51,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         left: action.left,
         top: action.top
+      };
+    case types.OPEN_SIDEBAR:
+      return {
+        ...state,
+        isSidebarOpened : !state.isSidebarOpened
+      };
+    case types.SET_ACTIVE_PAGE: //Переміщення модального вікна по екрану.
+      return {
+        ...state,
+        activePage: action.id
       };
     default:
       return state;

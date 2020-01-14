@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import FormData from 'form-data';
-import $ from "jquery";
 
 export default class Accept extends React.Component {
   constructor(props) {
