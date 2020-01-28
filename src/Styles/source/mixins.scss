@@ -6,6 +6,12 @@
   align-items: center;
 }
 
+@mixin flex-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 @mixin flex-space-around {
   display: flex;
   justify-content: space-around;
@@ -18,44 +24,87 @@
   align-items: center;
 }
 
-@mixin flex-column-space-around{
+@mixin flex-column-space-around {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
 
+@mixin font-stack {
+  color: $text-color;
+  font-family: $font-family;
+  font-weight: $font-weight;
+}
+
+@mixin borderGradient {
+  border-width: 3px;
+  border-style: solid;
+  border-image: linear-gradient(135deg, $primary-color 20%, $secondary-color 70%) 1;
+}
+
+@mixin textGradient {
+  background: linear-gradient(135deg, $primary-color 20%, $secondary-color 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin textArea {
+  position: relative;
+  @include flex-center;
+  @include font-stack;
+  background-color: $green-helpful;
+  height: 60px;
+  width: 300px;
+  padding: 10px;
+  resize: none;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+}
+
+@mixin input {
+  position: relative;
+  @include flex-center;
+  @include font-stack;
+  height: 45px;
+  width: 180px;
+  padding-left: 15px;
+  resize: none;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  background-color: $green-helpful;
+  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+}
+
 @mixin button {
   position: relative;
   @include flex-center;
-  color: white;
+  @include borderGradient;
+  color: $text-color;
   height: 35px;
   width: 100px;
   text-decoration: none;
   outline: none;
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(45deg, $primary-color, $secondary-color) 1;
-  background-color: transparent;
 }
 
+//background-color: rgba(0,0,0, 0.2);
 @mixin buttonActive {
   @include flex-center;
-  height: 35px;
-  width: 100px;
+  height: 41px;
+  width: 106px;
   color: black;
   text-decoration: none;
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(to right, $primary-color, $secondary-color) 1;
-  background: linear-gradient(to right, $primary-color, $secondary-color);
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
   opacity: 0.7;
 }
 
 @mixin buttonBefore {
   position: absolute;
   z-index: -1;
-  content:'';
+  content: '';
   top: 0;
   left: 0;
   width: 0;
@@ -71,9 +120,9 @@
 
 @mixin buttonHovered {
   position: relative;
-  box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);
+  box-shadow: 0 0 0 0 rgba(94, 181, 181, 0.7);
 
-  background-size:cover;
+  background-size: cover;
   background-repeat: no-repeat;
   cursor: pointer;
   -webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
@@ -82,9 +131,28 @@
   animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
-@-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(245, 101, 39, 0);}}
-@-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(245, 101, 39, 0);}}
-@-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(245, 101, 39, 0);}}
-@keyframes pulse {to {box-shadow: 0 0 0 45px rgba(245, 101, 39, 0);}}
+@-webkit-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(94, 181, 181, 0);
+  }
+}
+
+@-moz-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(94, 181, 181, 0);
+  }
+}
+
+@-ms-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(94, 181, 181, 0);
+  }
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(94, 181, 181, 0);
+  }
+}
 
 

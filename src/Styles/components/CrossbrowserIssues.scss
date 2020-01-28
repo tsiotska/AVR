@@ -1,0 +1,21 @@
+@import "../source/variables";
+
+textarea::-webkit-input-placeholder {
+  color: $text-color;
+}
+
+textarea:-moz-placeholder { /* Firefox 18- */
+  color: $text-color;
+}
+
+textarea::-moz-placeholder {  /* Firefox 19+ */
+  color: $text-color;
+}
+
+textarea:-ms-input-placeholder {
+  color: $text-color;
+}
+
+textarea::placeholder {
+  color: $text-color;
+}

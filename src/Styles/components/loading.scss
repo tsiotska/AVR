@@ -1,133 +1,37 @@
-@import "../source/mixins";
-
-.bubblingG {
-  text-align: center;
-  width: 80px;
-  height: 50px;
+.loaderWrapper {
+  position: relative;
+  z-index: 999;
+  left: 50%;
 }
 
-.bubblingG span {
-  display: inline-block;
-  vertical-align: middle;
-  width: 10px;
-  height: 10px;
-  margin: 25px auto;
-  background: #000000;
-  -moz-border-radius: 50px;
-  -moz-animation: bubblingG 0.5s infinite alternate;
-  -webkit-border-radius: 50px;
-  -webkit-animation: bubblingG 0.5s infinite alternate;
-  -o-animation: bubblingG 0.5s infinite alternate;
-  border-radius: 50px;
-  animation: bubblingG 0.5s infinite alternate;
+@for $i from 0 through 71 {
+  $deg: 5*$i;
+  .loaderWrapper div:nth-child(#{$i}) {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    transform-origin: 100% 50%;
+    transform: rotate(#{$deg}deg);
+  }
+
+  .loaderWrapper div:nth-child(#{$i}) .bar {
+    position: absolute;
+    height: 1px;
+    width: 100px;
+    left: 0;
+    border-radius: 20px;
+    transform-origin: right;
+    animation: spin 4s linear infinite;
+    background-color: rgb(18 + $i*3.26, 188, 176 + $i* -2.28);
+  }
 }
 
-#bubblingG_1 {
-  -moz-animation-delay: 0s;
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
-  -o-animation-delay: 0s;
-
-}
-
-#bubblingG_2 {
-  -moz-animation-delay: 0.15s;
-  -webkit-animation-delay: 0.15s;
-
-  -o-animation-delay: 0.15s;
-  animation-delay: 0.15s;
-}
-
-#bubblingG_3 {
-  -moz-animation-delay: 0.3s;
-  -webkit-animation-delay: 0.3s;
-  -o-animation-delay: 0.3s;
-  animation-delay: 0.3s;
-}
-
-@-moz-keyframes bubblingG {
+@-webkit-keyframes spin {
   0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -moz-transform: translateY(0);
+    transform: rotate(0deg);
   }
-
   100% {
-    width: 24px;
-    height: 24px;
-    background-color: #F7A923;
-    -moz-transform: translateY(-21px);
+    transform: rotate(360deg);
   }
-
 }
-
-@-webkit-keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -webkit-transform: translateY(0);
-  }
-
-  100% {
-    width: 24px;
-    height: 24px;
-    background-color: #F7A923;
-    -webkit-transform: translateY(-21px);
-  }
-
-}
-
-@-ms-keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -ms-transform: translateY(0);
-  }
-
-  100% {
-    width: 24px;
-    height: 24px;
-    background-color: #F7A923;
-    -ms-transform: translateY(-21px);
-  }
-
-}
-
-@-o-keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -o-transform: translateY(0);
-  }
-
-  100% {
-    width: 24px;
-    height: 24px;
-    background-color: #F7A923;
-    -o-transform: translateY(-21px);
-  }
-
-}
-
-@keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    transform: translateY(0);
-  }
-
-  100% {
-    width: 24px;
-    height: 24px;
-    background-color: #F7A923;
-    transform: translateY(-21px);
-  }
-
-}
-
 

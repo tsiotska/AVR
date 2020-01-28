@@ -8,6 +8,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         user: action.data,
         auth: action.auth,
+        token: action.token
       };
     case types.OPEN_MODAL_WINDOW: //Відкривати/закривати вікно
       if (action.toggle !== state.currentWindow) {
@@ -25,19 +26,13 @@ const reducer = (state = initialState, action) => {
           currentWindow: ""
         }
       }
-      case types.OPEN_LOGIN_DEFINITELY:
+    case types.OPEN_LOGIN_DEFINITELY:
       return {
         ...state,
         isModalOpened: true,
         currentWindow: "isLogInOpened",
         left: "50vw",
         top: "50vh"
-      };
-    case types.CLOSE_WINDOW:
-      return {
-        ...state,
-        isModalOpened: false,
-        currentWindow: "",
       };
     case types.CHANGE_WINDOW: //Переключитись мєжду модальними вікнами
       return {
@@ -55,13 +50,30 @@ const reducer = (state = initialState, action) => {
     case types.OPEN_SIDEBAR:
       return {
         ...state,
-        isSidebarOpened : !state.isSidebarOpened
+        isSidebarOpened: !state.isSidebarOpened
       };
     case types.SET_ACTIVE_PAGE: //Переміщення модального вікна по екрану.
       return {
         ...state,
         activePage: action.id
       };
+    case types.SAVE_FILES:
+      return {
+        ...state,
+        files: action.files,
+        filesFormData: action.filesFormData //ready to send for multer
+      };
+    case types.SAVE_MODEL_ID:
+      return {
+        ...state,
+        modelId: action.id
+      };
+    case types.TOGGLE_USER_INFO:
+      return {
+        ...state,
+        isUserInfoOpened: !state.isUserInfoOpened
+      };
+
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {connect} from "react-redux";
-import AdminPanel from "../../Pages/AdminPanel";
+import AdminPanel from "../../Pages/myCabinet/AdminPanel";
 
 class PrivateRoute extends React.Component {
   render() {

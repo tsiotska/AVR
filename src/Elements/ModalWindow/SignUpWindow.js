@@ -15,13 +15,13 @@ const modalStyles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '350px',
+    height: '370px',
     width: '500px',
     paddingTop: '50px',
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
     borderWidth: 4,
     borderStyle: 'solid',
-    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1',
+    borderImage: 'linear-gradient(135deg, #12BCB0, #FABE0E) 1',
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
   },
   button: {
@@ -38,12 +38,12 @@ const modalStyles = theme => ({
   inputLabel: {
     color: 'white !important',
     "&.focused": {
-      color: '#de1212 !important'
+      color: 'white !important'
     },
   },
 
   TextField: {
-    '& p':{
+    '& p': {
       color: 'white !important',
     },
     width: 320,
@@ -53,7 +53,7 @@ const modalStyles = theme => ({
   notchedOutline: {
     borderWidth: 4,
     borderStyle: 'solid !important',
-    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1 !important',
+    borderImage: 'linear-gradient(135deg, #12BCB0, #FABE0E) 1 !important',
   },
   error: {
     color: 'red'
@@ -63,7 +63,7 @@ const modalStyles = theme => ({
     color: 'white',
     textDecoration: 'none',
     '&:hover': {
-      color: 'black',
+      color: 'white',
       textDecoration: 'underline',
     }
   }
@@ -73,17 +73,20 @@ const modalStyles = theme => ({
 class SignUpWindow extends Component {
   state = {
     user: {
-      Name: "",
-      Email: "",
-      Password: ""
+      username: "",
+      email: "",
+      password: ""
     },
     nameError: "",
   };
 
   checkRegistration = () => {
-    axios.get('/api/users/register') //post this.state.user
+    console.log(this.state.user);
+
+    axios.post('/api/users/register', this.state.user)
       .then((response) => {
           if (response.data.auth) {
+            localStorage.setItem("token", response.data.token);
             this.props.setUsersData(response.data.user, response.data.auth);
             this.props.closeWindow(this.props.currentWindow)
           } else {
@@ -107,12 +110,10 @@ class SignUpWindow extends Component {
     let obj = {...this.state.user};
     obj[id] = current;
     this.setState({user: obj});
-    console.log(this.state.user.Email)
   };
 
 
   render() {
-    console.log("nameError: " + this.state.nameError)
     const {classes} = this.props;
     return (
       <form className={classes.form}>
@@ -120,7 +121,7 @@ class SignUpWindow extends Component {
         <Grid className={classes.column}>
 
           {this.state.nameError ?
-            <Grid className={classNames(classes.row, classes.error)}>This account is already exist!</Grid>
+            <Grid className={classNames(classes.row, classes.error)}>{this.state.nameError}</Grid>
             : null}
 
           <Grid className={classes.row}>
@@ -128,7 +129,7 @@ class SignUpWindow extends Component {
               // helperText={this.state.nameError}
               // onBlur={this.checkName}
               onChange={this.onChangeEvent}
-              id="Name"
+              id="username"
               label="Display Name"
               className={classes.TextField}
               margin="normal"
@@ -148,9 +149,9 @@ class SignUpWindow extends Component {
 
           <Grid className={classes.row}>
             <TextField
-              type={"email"}
+              type="email"
               onChange={this.onChangeEvent}
-              id="Email"
+              id="email"
               label="Email"
               className={classes.TextField}
               margin="normal"
@@ -172,7 +173,8 @@ class SignUpWindow extends Component {
             <TextField
               helperText={"Пароль повинен містити принаймні вісім символів, включаючи принаймні 1 букву та 1 цифру."}
               onChange={this.onChangeEvent}
-              id="Password"
+              id="password"
+              type="password"
               label="Password"
               className={classes.TextField}
               margin="normal"
@@ -192,7 +194,7 @@ class SignUpWindow extends Component {
           </Grid>
 
           <Grid className={classes.row}>
-            <div onClick={this.checkRegistration()} className={classNames("simpleButton", classes.button)}>
+            <div onClick={this.checkRegistration} className={classNames("simpleButton", classes.button)}>
               Sign up
             </div>
           </Grid>

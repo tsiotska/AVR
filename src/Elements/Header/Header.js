@@ -7,7 +7,7 @@ import MobileHeader from './MobileHeader';
 
 class Header extends React.Component {
   state = {
-    adaptateToMobile: false,
+    adaptedToMobile: false,
     leftSide: null,
     rightSide: null
   };
@@ -15,22 +15,22 @@ class Header extends React.Component {
   onResize = () => {
     if (window.innerWidth >= 720) {
       this.setState({
-        adaptateToMobile: false,
+        adaptedToMobile: false,
         leftSide: 354.5 + (window.innerWidth - 720) * 0.0055,
         rightSide: 10.5 - (window.innerWidth - 720) * 0.009
       });
-      if(this.props.isSidebarOpened){
+      if (this.props.isSidebarOpened) {
         this.props.openSidebar();
       }
       document.getElementById("leftSide").style.transform = " rotate(" + this.state.leftSide + "deg)";
-      document.getElementById("rightSide").style.transform = " rotate(" + this.state.rightSide + "deg)";
     } else {
       this.setState({
-        adaptateToMobile: true,
-        rightSide: 14 - (window.innerWidth - 200) * 0.02
+        adaptedToMobile: true,
+        rightSide: 10 - (window.innerWidth - 200) * 0.015
       });
-      document.getElementById("rightSide").style.transform = " rotate(" + this.state.rightSide + "deg)";
     }
+
+    document.getElementById("rightSide").style.transform = " rotate(" + this.state.rightSide + "deg)";
   };
 
   logOut = () => {
@@ -55,7 +55,7 @@ class Header extends React.Component {
 
         <div className="nav-list">
 
-          {!this.state.adaptateToMobile ?
+          {!this.state.adaptedToMobile ?
             <div id="leftSide" className="blockOfRoutes">
               <div>
                 <Link onClick={this.activeButton} id="home"
@@ -72,12 +72,13 @@ class Header extends React.Component {
               <div>
                 <Link onClick={this.activeButton} id="news"
                       className={this.props.activePage === this.props.pages[2] ?
-                        "activateButton " : "simpleButton"} to="/news"> News</Link>
+                        "activateButton" : "simpleButton"} to="/news"> News</Link>
               </div>
             </div>
             : <MobileHeader/>}
 
-          {!this.props.auth ? <div id="rightSide" className="logBtnGroup">
+          {!this.props.auth ?
+            <div id="rightSide" className="logBtnGroup">
 
               <div id="SignIn" className="SignIn" onClick={() => this.props.openModalWindow("isLogInOpened")}> Sign In
               </div>
@@ -86,8 +87,11 @@ class Header extends React.Component {
 
             </div>
             :
-            <div>
-              <button onClick={this.logOut}> Log Out</button>
+            <div id="rightSide" className="logBtnGroup">
+              <div className="simpleButton"
+                   onClick={this.logOut}> Log Out
+              </div>
+              <i className="fas fa-sliders-h fa-2x" onClick={() => this.props.toggleInfoWindow()}/>
             </div>
           }
         </div>
@@ -115,6 +119,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   logOut: (data, auth) => {
     dispatch({type: "SET_USER_DATA", data: data, auth: auth})
+  },
+  toggleInfoWindow: () => {
+    dispatch({type: "TOGGLE_USER_INFO"})
   }
 });
 

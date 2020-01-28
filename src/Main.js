@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import axios from "axios";
 import CollectionPage from "./Pages/CollectionPage"
 import ModalWindow from "./Elements/ModalWindow/modalWindow"
+import UserInfo from "./Pages/myCabinet/UserInfo";
 import Header from './Elements/Header/Header';
 import Home from './Pages/Home';
 import Sidebar from './Elements/Header/Sidebar';
@@ -21,19 +22,22 @@ class Main extends React.Component {
   componentDidMount() {
     this.vantaEffect = VANTA.WAVES({
       el: this.yourElement.current,
-      color: 0x1234a4,
+      color: 0x153c09,
       THREE: THREE
     });
 
     let token = localStorage.getItem("token");
-
+    console.log(token);
     if (token) {
       axios.get("/api/users/profile", {headers: {'Authorization': token}})
         .then((response) => {
             console.log(response);
-            this.props.setUsersData(response.data.user, response.data.auth);
+            if (response.data.auth) {
+              localStorage.setItem("token", response.data.token);
+              this.props.setUsersData(response.data.user, response.data.auth, response.data.token);
+            }
           }
-        )
+        ).catch((err) => console.log(err))
     }
   }
 
@@ -47,7 +51,8 @@ class Main extends React.Component {
   render() {
     return (
       <div className="Wrapper">
-        <div className='Background' ref={this.yourElement}/>
+
+        <div className="Background" ref={this.yourElement}/>
 
         <div className="Components">
           <Router>
@@ -58,24 +63,28 @@ class Main extends React.Component {
               <ModalWindow/>
               : null}
 
+            {this.props.isUserInfoOpened ?
+              <UserInfo/>
+              : null}
 
-            <Switch>
+            <div className="Route">
+              <Switch>
+                <Route exact path="/">
+                  {this.props.auth ? <Redirect to="/cabinet"/> : <Home/>}
+                </Route>
 
-              <Route exact path="/">
-                {this.props.auth ? <Redirect to="/cabinet"/> : <Home/>}
-              </Route>
+                <Route exact path="/news">
 
-              <Route exact path="/news">
+                </Route>
 
-              </Route>
+                <Route exact path="/collections">
+                  <CollectionPage/>
+                </Route>
 
-              <Route exact path="/collections">
-                <CollectionPage/>
-              </Route>
+                <PrivateRoute exact path="/cabinet"/>
+              </Switch>
+            </div>
 
-              <PrivateRoute exact path="/cabinet"/>
-
-            </Switch>
           </Router>
         </div>
       </div>
@@ -86,12 +95,13 @@ class Main extends React.Component {
 const mapStateToProps = (state) => ({
   isModalOpened: state.reducer.isModalOpened,
   isSidebarOpened: state.reducer.isSidebarOpened,
-  auth: state.reducer.auth
+  auth: state.reducer.auth,
+  isUserInfoOpened: state.reducer.isUserInfoOpened
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setUsersData: (data, auth) => {
-    dispatch({type: "SET_USER_DATA", data: data, auth: auth})
+  setUsersData: (data, auth, token) => {
+    dispatch({type: "SET_USER_DATA", data: data, auth: auth, token: token})
   }
 });
 

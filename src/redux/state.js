@@ -1,6 +1,7 @@
 export const initialState = {
-  auth: false,
-  user: { username: null, email: null},
+  token: null,
+  auth: false, //duplicated token -_-
+  user: {username: null, email: null},
   isModalOpened: false,
   isSignUpOpened: false,
   isLogInOpened: false,
@@ -10,4 +11,8 @@ export const initialState = {
   isSidebarOpened: false,
   activePage: window.location.pathname === "/" ? "home" : window.location.pathname,
   pages: ["home", "collections", "news"],
+  files: [],
+  filesFormData: null,
+  categories: [],
+  isUserInfoOpened: false
 };

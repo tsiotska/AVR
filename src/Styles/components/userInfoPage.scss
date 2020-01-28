@@ -1,0 +1,66 @@
+@import "../source/mixins";
+@import "../source/variables";
+
+.userInfoPageWrapper {
+  position: relative;
+  z-index: 3;
+  top: 100px;
+  display: flex;
+  width: 100%;
+  height: 400px;
+  padding-bottom: 10%;
+  background: linear-gradient(to right, $green-helpful, transparent);
+  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+}
+
+.imgContainer {
+  position: relative;
+}
+
+.Avatar {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+}
+
+.putImageBtn {
+  display: none
+}
+
+.imgContainer:hover .putImageBtn {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: block;
+  border: none;
+  cursor: pointer;
+  color: $secondary-color;
+  text-shadow: $text-shadow;
+  font-size: 20px;
+  background-color: transparent;
+}
+
+.fileInput {
+  display: none;
+}
+
+.userInfoBtns{
+  @include flex-space-around;
+}
+
+@media screen and (max-width: 820px) {
+  .userInfoPageWrapper {
+
+    height: 800px;
+  }
+  .rowSpaceAround {
+    @include flex-column-space-around;
+  }
+
+  .userInfoBtns{
+    margin: 30px;
+  }
+}

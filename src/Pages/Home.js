@@ -1,6 +1,6 @@
 import React from 'react';
-import Introduction from '../Elements/Model/Introduction';
-//import MobileHeader from "../Elements/Header/MobileHeader";
+import ModelsTemplate from '../Elements/Model/ModelsTemplate';
+
 
 
 class Home extends React.Component {
@@ -9,8 +9,14 @@ class Home extends React.Component {
       <div className="homeWrapper">
         <div className="modelIntroductionWrapper">
 
-          <div className="text-label">Using our services you can easily provide any 3D object to your site only in one click </div>
-          <div className="introBlock"><Introduction/></div>
+          <div className="text-label">Using our services you can easily provide any 3D object to your site only in one
+            click
+          </div>
+
+          <div className="introBlock">
+            <ModelsTemplate model={"Introduction"}/>
+          </div>
+
         </div>
       </div>
     );

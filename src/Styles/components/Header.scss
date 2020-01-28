@@ -18,7 +18,7 @@
 .nav-wrapper:before {
   position: absolute;
   content: "";
-  background-image: url("https://bnoengenharia.com.br/wp-content/uploads/2018/03/header-background-indexed.png");
+  background-image: url("https://img2.goodfon.ru/wallpaper/nbig/b/84/geometriya-fon-oboi-tekstura.jpg");
   width: 100%;
   opacity: 1;
   height: 100%;
@@ -67,6 +67,16 @@
 
 .simpleButton:hover, .SignIn:hover, .SignUp:hover {
   @include buttonHovered;
+}
+
+.fa-sliders-h {
+  background: linear-gradient(135deg, $primary-color 20%, $secondary-color 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fa-sliders-h:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 720px) {

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import * as THREE from 'three';
-//import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import GLTFLoader from 'three-gltf-loader'
 import OrbitControls from 'three-orbitcontrols';
+import PreLoader from '../../../Loading/PreLoader';
 
 //const side1 = require('../assets/skybox/skybox1.jpg');
 //const side2 = require('../assets/skybox/skybox2.jpg');
@@ -15,6 +15,7 @@ import OrbitControls from 'three-orbitcontrols';
 class ThreeScene extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {loading: false};
     this.xhrLink = this.props.link; //Відправляєш лінку
     this.THREE = THREE;
   }
@@ -87,6 +88,8 @@ class ThreeScene extends React.Component {
     this.controls.enableDamping = true;
     this.controls.campingFactor = 0.001;
     this.controls.enableZoom = true;
+    this.controls.minDistance = 1;
+    this.controls.maxDistance = 5;
   };
 
   /*createSkybox = () => {
@@ -98,9 +101,9 @@ class ThreeScene extends React.Component {
 
   loadModel = () => {
     let loader = new GLTFLoader();
-    // console.log(this.xhrLink);
-    loader.load(this.xhrLink, (gltf) => {
+    this.setState({loading: true});
 
+    loader.load(this.xhrLink, (gltf) => {
         this.object = gltf;
         const bbox = new this.THREE.Box3().setFromObject(this.object.scene);
 
@@ -117,10 +120,6 @@ class ThreeScene extends React.Component {
         bbox.getSize(size);
         this.scene.add(this.object.scene);
 
-
-        console.log("Is there animation?")
-        console.log(this.object.animations)
-
         if (this.object.animations) {
           this.mixer = new THREE.AnimationMixer(this.object.scene);
 
@@ -128,7 +127,7 @@ class ThreeScene extends React.Component {
             this.mixer.clipAction(clip).play();
           });
         }
-
+        this.setState({loading: false});
         this.start();
       }, (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
       (err) => {
@@ -177,10 +176,16 @@ class ThreeScene extends React.Component {
 
   render() {
     return (
-      <div style={elementStyle} ref={(mount) => {
-        this.ref = mount
-      }}>
-        <ReactResizeDetector handleWidth handleHeight onResize={this.onWindowResize}/>
+      <div className="scene">
+        {this.state.loading ?
+          <PreLoader/>
+          : null
+        }
+        <div style={elementStyle} ref={(mount) => {
+          this.ref = mount
+        }}>
+          <ReactResizeDetector handleWidth handleHeight onResize={this.onWindowResize}/>
+        </div>
       </div>
     )
   }
@@ -191,4 +196,4 @@ const elementStyle = {
   height: '100%'
 };
 
-export default ThreeScene
+export default ThreeScene;

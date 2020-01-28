@@ -18,10 +18,10 @@ const modalStyles = theme => ({
     width: '500px',
     zIndex: '5',
     position: 'relative',
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
     borderWidth: 4,
     borderStyle: 'solid',
-    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1',
+    borderImage: 'linear-gradient(135deg, #12BCB0, #FABE0E) 1',
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
   },
   button: {
@@ -38,7 +38,7 @@ const modalStyles = theme => ({
   inputLabel: {
     color: 'white !important',
     "&.focused": {
-      color: '#de1212 !important'
+      color: 'white !important'
     },
   },
 
@@ -50,7 +50,7 @@ const modalStyles = theme => ({
   notchedOutline: {
     borderWidth: 4,
     borderStyle: 'solid !important',
-    borderImage: 'linear-gradient(45deg, #12358c, #de1212) 1 !important',
+    borderImage: 'linear-gradient(135deg, #12BCB0, #FABE0E) 1 !important',
   },
   infoText: {
     color: '#c7c7c7',
@@ -64,7 +64,7 @@ const modalStyles = theme => ({
     color: 'white',
     textDecoration: 'none',
     '&:hover': {
-      color: 'black',
+      color: 'white',
       textDecoration: 'underline',
     }
   }
@@ -75,7 +75,7 @@ class LoginWindow extends Component {
     super(props);
     this.state = {
       user: {
-        username: "",
+        email: "",
         password: ""
       },
       errorMessage: ""
@@ -90,7 +90,7 @@ class LoginWindow extends Component {
 
           if (response.data.auth) {
             localStorage.setItem("token", response.data.token);
-            this.props.setUsersData(response.data.user, response.data.auth)
+            this.props.setUsersData(response.data.user, response.data.auth, response.data.token);
             this.props.closeWindow(this.props.currentWindow);
           } else {
             this
@@ -130,8 +130,9 @@ class LoginWindow extends Component {
             <TextField
               error={!!this.state.errorMessage}
               onChange={this.onChangeEvent}
-              id="username"
-              label="username"
+              type="email"
+              id="email"
+              label="Email"
               className={classes.TextField}
               margin="normal"
               variant="outlined"
@@ -206,8 +207,8 @@ const mapDispatchToProps = (dispatch) => ({
   changeCurrentWindow: (toggle) => {
     dispatch({type: "CHANGE_WINDOW", toggle: toggle})
   },
-  setUsersData: (data, auth) => {
-    dispatch({type: "SET_USER_DATA", data: data, auth: auth})
+  setUsersData: (data, auth,token) => {
+    dispatch({type: "SET_USER_DATA", data: data, auth: auth, token:token})
   }
 });
 
