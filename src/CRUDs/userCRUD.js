@@ -1,29 +1,25 @@
-import mongoose from 'mongoose';
 import '../schemes/userSchema';
 import bcrypt from "bcryptjs";
 
-const user = mongoose.model('user');
+import {User} from '../schemes/userSchema';
 
-export const findUserByName = (username) => {
-  return user.find({username: username});
-};
-export const findUserByToken = (token) => {
-  return user.find({token: token});
+export const findUser = (param, value) => {
+  return User.findOne({[param]: value});
 };
 
-export const createUser = (req) => {
-  console.log(req.body);
-  const User = new user({
-    email: req.body.email,
-    surname: req.body.surname,
-    password: req.body.password,
+export const createUser = (result) => {
+  const user = new User({
+    email: result.value.email,
+    username: result.value.username,
+    password: result.value.password,
+    imageName: "defaultAva.jpg",
     createdAt: new Date()
   });
-  return User.save();
+  return user.save();
 };
 
-export const updateUser = (data, token) => {
-  return user.updateOne({username: data[0].username}, {}).set({ token: token, updatedAt: new Date() });
+export const updateUser = (user, type, data) => {
+  return User.updateOne({username: user.username}, {}).set({ [type]: data, updatedAt: new Date() });
 };
 
 export const hashPassword = async (password) => {
@@ -41,8 +37,6 @@ export const comparePassword = (password, hash) => {
     return result;
   })
 };
-
-
 
 
 

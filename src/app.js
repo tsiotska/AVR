@@ -1,11 +1,9 @@
+import morgan from 'morgan';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import path from 'path';
-
-import passport from 'passport';
 import session from 'express-session';
-import flash from 'connect-flash';
 
 import {setUpConnection} from "./database/database";
 
@@ -15,9 +13,9 @@ import models from './routes/models';
 
 const app = express();
 
-
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: true}));
+//app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
@@ -26,18 +24,6 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-app.use(flash());
-app.use((req, res, next) => {
-  res.locals.success_mesages = req.flash('success');
-  res.locals.error_messages = req.flash('error');
-  next()
-});
-
 
 app.use('/static', express.static(path.join(__dirname, '../client/build/')));
 
@@ -72,7 +58,7 @@ app.get('/*', function (req, res) {
 
 async function start() {
   setUpConnection()
-  app.listen(5000, () => console.log("started at 5000"));
+  app.listen(process.env.PORT, () => console.log("started at" + process.env.PORT));
 }
 
 start();

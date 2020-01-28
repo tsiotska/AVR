@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec babel-node src/app.js",
-    "build": "babel src --out-dir dist",
-    "serve": "node dist/app.js"
+    "serve": "node -r dotenv/config babel-node src/app.js",
+    "start": "nodemon --exec  babel-node -r node_modules/dotenv/config src/app.js",
+    "build": "babel src --out-dir dist"
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "create-react-app": "^3.2.0",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "express-session": "^1.17.0",
     "fs-extra": "^8.1.0",

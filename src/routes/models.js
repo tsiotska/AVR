@@ -1,8 +1,9 @@
 const model = require('express').Router();
 const path = require('path');
-import * as crud from '../CRUDs/modelCRUD';
 import * as fs from 'fs';
 import * as fsExtra from 'fs-extra';
+import {createModel, updateModel} from '../CRUDs/modelCRUD';
+import {verifyToken, checkAuth} from '../checkAuth';
 
 //root defines a directory of model which client requires
 let root = "";
@@ -44,22 +45,21 @@ let storage = multer.diskStorage({
     cb(null, dir)
   },
   filename: function (req, file, cb) {
-    console.log(file.originalname);
     cb(null, file.originalname)
   }
 });
 
 const upload = multer({storage: storage}).any();
 
-model.post("/upload/model", function (req, res, next) {
+model.post("/upload/model", checkAuth, function (req, res, next) {
   upload(req, res, function (err) {
     if (err) {
       console.log(err);
       res.json({err});
       return;
     }
-    if (req.body.name) {
-      let dir = req.body.name;
+    if (req.body.modelId) {
+      let dir = req.body.modelId;
       if (!fs.existsSync('models/' + dir + '/')) {
         fs.mkdirSync('models/' + dir + '/');
         fs.mkdirSync('models/' + dir + '/textures/');
@@ -67,7 +67,7 @@ model.post("/upload/model", function (req, res, next) {
 
       for (let i = 0; i < req.files.length; i++) {
         let filename = req.files[i].originalname;
-        console.log(filename);
+        // console.log(filename);
         let expansion = path.extname(req.files[i].originalname);
         console.log(expansion);
 
@@ -76,8 +76,7 @@ model.post("/upload/model", function (req, res, next) {
             if (err) return console.error(err);
             console.log('success!')
           });
-        }
-        else{
+        } else {
           fsExtra.move('models/' + filename, 'models/' + dir + '/textures/' + filename, function (err) {
             if (err) return console.error(err);
             console.log('success!')
@@ -88,9 +87,19 @@ model.post("/upload/model", function (req, res, next) {
       for (let i = 0; i < req.files.length; i++) {
         console.log(`File ${req.files[i].originalname} uploaded to ${req.files[i].path}`);
       }
-      return res.status(200).send({success: true});
-    }
+      console.log("req");
+      console.log(req.body);
+      createModel(req.body.modelId);
+
+      return res.status(200).send({success: true, modelId: dir});
+    } else return res.status(200).send({success: false, message: "No modelId found"});
   });
+});
+
+//PROTECT THIS!
+model.post("/update/model:modelId/information", function (req, res, next) {
+  updateModel(req);
+  return res.status(200).send({success: true});
 });
 
 module.exports = model;

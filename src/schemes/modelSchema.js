@@ -1,14 +1,17 @@
 import mongoose, {Schema} from 'mongoose';
 
-const modelSchema = new Schema({
-    name: {type: String},
-    author: {type: String},
-    about: {type: String}
+const modelSchema = new Schema(
+  {
+    modelId: String,
+    author:  String,
+    description:  String,
+    category:  String,
+    screenName:  String
   },
   {
     timestamps: {
-      createdAt: {type:Date},
-      updatedAt: {type:Date}
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt'
     }
   });
 
