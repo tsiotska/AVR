@@ -11,7 +11,7 @@ let root = "";
 model.get('/gltf', (req, res) => {
   root = req.query.root;
   console.log(root);
-  res.sendFile('scene.gltf', {root: 'models/' + root + "/"}); //!!!
+  res.sendFile('scene.gltf', {root: 'models/' + root + "/"});
 });
 
 model.get('/scene.bin', (req, res) => {
@@ -30,9 +30,13 @@ model.get('/list', (req, res) => {
   fs.readdirSync(folder).forEach((file, index) => {
     list[index] = file;
   });
-  res.send(list);
+  res.status(200).send(list);
 });
 
+const categories = ["CHARACTER", "MACHINE", "ANIMAL", "MOSQUITO", "ITEM", "SCENE", "ABSTRACTION", "ANIMATION", "OTHER"];
+model.get('/categories', (req, res) => {
+  res.json(categories);
+});
 
 import multer from 'multer';
 
@@ -51,13 +55,14 @@ let storage = multer.diskStorage({
 
 const upload = multer({storage: storage}).any();
 
-model.post("/upload/model", checkAuth, function (req, res, next) {
+model.post("/upload/model", checkAuth, (req, res, next) => {
   upload(req, res, function (err) {
     if (err) {
       console.log(err);
       res.json({err});
       return;
     }
+
     if (req.body.modelId) {
       let dir = req.body.modelId;
       if (!fs.existsSync('models/' + dir + '/')) {
@@ -87,8 +92,7 @@ model.post("/upload/model", checkAuth, function (req, res, next) {
       for (let i = 0; i < req.files.length; i++) {
         console.log(`File ${req.files[i].originalname} uploaded to ${req.files[i].path}`);
       }
-      console.log("req");
-      console.log(req.body);
+
       createModel(req.body.modelId);
 
       return res.status(200).send({success: true, modelId: dir});
@@ -96,9 +100,40 @@ model.post("/upload/model", checkAuth, function (req, res, next) {
   });
 });
 
-//PROTECT THIS!
-model.post("/update/model:modelId/information", function (req, res, next) {
-  updateModel(req);
+
+let screenStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = 'public/screenshots/';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+    cb(null, dir)
+  },
+  filename: function (req, file, cb, next) {
+    console.log("In multer: ")
+    console.log(req.body);
+
+    req.body.screenName = req.body.modelId + ".blob";
+    cb(null, req.body.screenName);
+  }
+});
+
+const uploadScreen = multer({storage: screenStorage}).any();
+
+model.post("/update/model:modelId/screen", checkAuth, uploadScreen, async (req, res, next) => {
+  console.log("Before updating: ")
+  console.log(req.body);
+
+  await updateModel(req.body);
+  return res.status(200).send({success: true});
+});
+
+
+model.post("/update/model:modelId/information", checkAuth, async (req, res, next) => {
+  console.log("req body: ")
+  console.log(req.body)
+
+  await updateModel(req.body);
   return res.status(200).send({success: true});
 });
 

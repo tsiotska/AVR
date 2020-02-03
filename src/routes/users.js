@@ -134,7 +134,7 @@ router.get('/avatar', checkAuth, async (req, res) => {
   console.log("Sending avatar...");
   const user = await findUser("token", req.headers.authorization);
   if (user) {
-    res.sendFile(user.imageName, {root: path.join(__dirname, '../../public/images/')});
+    res.sendFile(user.imageName, {root: path.join(__dirname, '../../public/avatars/')});
   }
 });
 
@@ -142,7 +142,7 @@ import multer from 'multer';
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = 'public/images/';
+    const dir = 'public/avatars/';
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
@@ -158,6 +158,7 @@ let storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 router.post('/updatePhoto', checkAuth, upload.single('image'), async (req, res) => {
+  console.log("Updating photo!")
   if (!req.file) {
     console.log("No file received");
     return res.send({
@@ -165,7 +166,7 @@ router.post('/updatePhoto', checkAuth, upload.single('image'), async (req, res) 
     });
   } else {
     const user = await findUser("token", req.headers.authorization);
-    const pathToImage = "public/images/" + user.imageName;
+    const pathToImage = "public/avatars/" + user.imageName;
     if (user.imageName !== "defaultAva.jpg" && fs.existsSync(pathToImage)) {
       fs.unlink(pathToImage, function (err) {
         if (err) throw err;
@@ -173,7 +174,7 @@ router.post('/updatePhoto', checkAuth, upload.single('image'), async (req, res) 
       });
     }
     await updateUser(user, "imageName", req.newFilename);
-    return res.sendFile(req.newFilename, {root: path.join(__dirname, '../../public/images/')});
+    return res.sendFile(req.newFilename, {root: path.join(__dirname, '../../public/avatars/')});
   }
 });
 

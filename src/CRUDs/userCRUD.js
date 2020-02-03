@@ -1,7 +1,7 @@
-import '../schemes/userSchema';
+import '../schemas/userSchema';
 import bcrypt from "bcryptjs";
 
-import {User} from '../schemes/userSchema';
+import {User} from '../schemas/userSchema';
 
 export const findUser = (param, value) => {
   return User.findOne({[param]: value});

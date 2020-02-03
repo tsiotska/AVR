@@ -1,9 +1,8 @@
-import morgan from 'morgan';
+//import morgan from 'morgan';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import path from 'path';
-import session from 'express-session';
 
 import {setUpConnection} from "./database/database";
 
@@ -18,12 +17,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 //app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  cookie: { maxAge: 60000 },
-  secret: 'codeworkrsecret',
-  saveUninitialized: false,
-  resave: false
-}));
 
 app.use('/static', express.static(path.join(__dirname, '../client/build/')));
 
@@ -42,7 +35,6 @@ app.get('/manifest.json', function (req, res) {
 app.get('/style', function (req, res) {
   res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/build/style.css'));
 });
-
 
 app.use('/api/users', users);
 app.use('/api/models', models);
