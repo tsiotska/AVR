@@ -73,11 +73,27 @@ const reducer = (state = initialState, action) => {
         ...state,
         isUserInfoOpened: !state.isUserInfoOpened
       };
-
+    case types.READY_FOR_SCREEN:
+      return {
+        ...state,
+        isReadyForScreen: action.flag
+      };
+    case types.LOG_OUT:
+      return {
+        ...state,
+        token: null,
+        auth: false, //duplicated token -_-
+        user: {username: null, email: null},
+       // activePage: null,
+        files: [],
+        filesFormData: null,
+        isUserInfoOpened: false,
+        isReadyForScreen: false,
+        modelId: null
+      };
     default:
       return state;
   }
-
 };
 
 export default reducer;

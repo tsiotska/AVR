@@ -16,8 +16,9 @@ class DropzoneComponent extends React.Component {
   };
 
   sendFiles = () => {
-    console.log(this.props.token);
-    axios.post('/api/models/upload/model', this.props.filesFormData, {headers: {'Authorization': this.props.token}}).then((res) => {
+    axios.post('/api/models/upload/model', this.props.filesFormData, {
+      headers: {'Authorization': localStorage.getItem("token")},
+    }).then((res) => {
       console.log(res);
       this.props.saveModelId(res.data.modelId)
     })
@@ -40,6 +41,7 @@ class DropzoneComponent extends React.Component {
                   <p className="dropzoneLabel">Drag 'n' drop some files here, or click to select files</p>
                 </div>
               </div>
+
               <aside>
                 <h4>Files</h4>
                 {this.props.files.map((file) => {

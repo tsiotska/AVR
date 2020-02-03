@@ -12,6 +12,12 @@ class Header extends React.Component {
     rightSide: null
   };
 
+  componentDidMount() {
+    const path = window.location.pathname.split("/");
+    console.log(path[1]);
+    this.props.setActivePage(path[1]);
+  }
+
   onResize = () => {
     if (window.innerWidth >= 720) {
       this.setState({
@@ -38,8 +44,8 @@ class Header extends React.Component {
       console.log("You are logged out!");
       console.log(response);
       localStorage.removeItem("token");
-      this.props.logOut(response.data.user, response.data.auth);
-    })
+      this.props.logOut();
+    }).catch((err) => console.log(err))
   };
 
   activeButton = (event) => {
@@ -58,8 +64,8 @@ class Header extends React.Component {
           {!this.state.adaptedToMobile ?
             <div id="leftSide" className="blockOfRoutes">
               <div>
-                <Link onClick={this.activeButton} id="home"
-                      className={this.props.activePage === this.props.pages[0] ?
+                <Link onClick={this.activeButton} id=""
+                      className={this.props.activePage === this.props.pages[0] || this.props.activePage === "cabinet" ?
                         "activateButton " : "simpleButton"} to="/"> Home </Link>
               </div>
 
@@ -101,9 +107,9 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  pages: state.reducer.pages,
   auth: state.reducer.auth,
   activePage: state.reducer.activePage,
-  pages: state.reducer.pages,
   isSidebarOpened: state.reducer.isSidebarOpened,
 });
 
@@ -117,8 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
   openModalWindow: (toggle) => {
     dispatch({type: "OPEN_MODAL_WINDOW", toggle: toggle})
   },
-  logOut: (data, auth) => {
-    dispatch({type: "SET_USER_DATA", data: data, auth: auth})
+  logOut: () => {
+    dispatch({type: "LOG_OUT"})
   },
   toggleInfoWindow: () => {
     dispatch({type: "TOGGLE_USER_INFO"})

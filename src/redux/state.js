@@ -9,10 +9,11 @@ export const initialState = {
   left: "50vw",
   top: "50vh",
   isSidebarOpened: false,
-  activePage: window.location.pathname === "/" ? "home" : window.location.pathname,
-  pages: ["home", "collections", "news"],
+  activePage: null,
+  pages: ["", "collections", "news"],
   files: [],
   filesFormData: null,
-  categories: [],
-  isUserInfoOpened: false
+  isUserInfoOpened: false,
+  isReadyForScreen: false,
+  modelId: null
 };

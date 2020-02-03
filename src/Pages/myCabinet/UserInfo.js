@@ -31,6 +31,9 @@ class UserInfo extends React.Component {
     this.setState({loading: true});
     axios.post("/api/users/updatePhoto", fd, {responseType: 'blob', headers: {'Authorization': this.props.token}})
       .then((image) => {
+        console.log("New avatar incoming!!! ")
+        console.log(image)
+
         this.setState({
           avatar: window.URL.createObjectURL(image.data),
           loading: false
@@ -42,7 +45,7 @@ class UserInfo extends React.Component {
     return (
       <div className="userInfoPageWrapper">
         <div className="columnSpaceAround">
-          <div className="FlexStart">
+          <div className="columnFlexStart">
             <p className="heading">Your profile information</p>
           </div>
 
@@ -59,21 +62,21 @@ class UserInfo extends React.Component {
               <button className="putImageBtn" onClick={() => this.fileInput.click()}>Change avatar</button>
             </div>
 
-            <div className="FlexStart">
+            <div className="columnFlexStart">
               <p className="text">Username</p>
               <input disabled className="input" value={this.props.username}/>
             </div>
-            <div className="FlexStart">
+            <div className="columnFlexStart">
               <p className="text">Email</p>
               <input disabled className="input" value={this.props.email}/>
             </div>
-            <div className="FlexStart">
+            <div className="columnFlexStart">
               <p className="text">Phone number</p>
               <input disabled className="input" value={this.props.phone}/>
             </div>
           </div>
           <div className="rowSpaceAround">
-            <div className="FlexStart">
+            <div className="columnFlexStart">
               <p className="text">Your quotes</p>
               <textarea disabled className="textArea" value={this.props.quotes}/>
             </div>

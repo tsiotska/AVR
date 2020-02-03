@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader'
 import OrbitControls from 'three-orbitcontrols';
 import PreLoader from '../../../Loading/PreLoader';
+import {connect} from "react-redux";
 
 //const side1 = require('../assets/skybox/skybox1.jpg');
 //const side2 = require('../assets/skybox/skybox2.jpg');
@@ -21,7 +22,7 @@ class ThreeScene extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.link !== this.props.link) {
+    if (prevProps.link !== this.props.link && this.props.link) {
       this.changeModel();
       this.setCamera();
       this.setControls();
@@ -30,18 +31,20 @@ class ThreeScene extends React.Component {
   }
 
   componentDidMount() {
-    this.scene = new this.THREE.Scene();
-    this.width = this.ref.clientWidth;
-    this.height = this.ref.clientHeight;
+    if (this.props.link) {
+      this.scene = new this.THREE.Scene();
+      this.width = this.ref.clientWidth;
+      this.height = this.ref.clientHeight;
 
-    this.camera = new this.THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 9999);
+      this.camera = new this.THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 9999);
 
-    this.setCamera();
-    //this.createSkybox();
-    this.configureLights();
-    this.configureRenderer();
-    this.setControls();
-    this.loadModel();
+      this.setCamera();
+      //this.createSkybox();
+      this.configureLights();
+      this.configureRenderer();
+      this.setControls();
+      this.loadModel();
+    }
   };
 
   setCamera = () => {
@@ -52,7 +55,8 @@ class ThreeScene extends React.Component {
   };
 
   configureRenderer = () => {
-    this.renderer = new this.THREE.WebGLRenderer({alpha: true});
+    this.renderer = new this.THREE.WebGLRenderer({alpha: true, preserveDrawingBuffer: true});
+    this.renderer.domElement.id = 'three';
     this.renderer.physicallyCorrectLights = true;
     this.renderer.gammaInput = true;
     this.renderer.gammaOutput = true;
@@ -100,6 +104,9 @@ class ThreeScene extends React.Component {
   };*/
 
   loadModel = () => {
+    console.log("FUCKING SHIT!!!")
+    console.log(this.xhrLink)
+
     let loader = new GLTFLoader();
     this.setState({loading: true});
 
@@ -128,6 +135,7 @@ class ThreeScene extends React.Component {
           });
         }
         this.setState({loading: false});
+        //this.props.readyForScreen();
         this.start();
       }, (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
       (err) => {
@@ -153,7 +161,8 @@ class ThreeScene extends React.Component {
   };
 
   stop = () => {
-    cancelAnimationFrame(this.frameId)
+    cancelAnimationFrame(this.frameId);
+    this.frameId = false;
   };
 
   animate = () => {
@@ -174,9 +183,14 @@ class ThreeScene extends React.Component {
     this.renderer.setSize(this.width, this.height);
   };
 
+  stopAnimation = () => {
+    this.stop();
+    setTimeout(this.start, 3000)
+  };
+
   render() {
     return (
-      <div className="scene">
+      <div className="scene" onClick={this.stopAnimation}>
         {this.state.loading ?
           <PreLoader/>
           : null
@@ -184,6 +198,7 @@ class ThreeScene extends React.Component {
         <div style={elementStyle} ref={(mount) => {
           this.ref = mount
         }}>
+
           <ReactResizeDetector handleWidth handleHeight onResize={this.onWindowResize}/>
         </div>
       </div>
@@ -196,4 +211,14 @@ const elementStyle = {
   height: '100%'
 };
 
-export default ThreeScene;
+const mapStateToProps = (state) => ({
+  //files: state.reducer.files,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  /*readyForScreen: () => {
+    dispatch({type: "READY_FOR_SCREEN", flag: true})
+  }*/
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThreeScene);

@@ -1,22 +1,42 @@
 import {connect} from "react-redux";
-import React, {useRef} from "react";
+import React, {useRef, useEffect, useState} from "react";
 import axios from "axios";
+import Select from 'react-select';
+import {reactSelectStyles} from '../../Styles/components/reactSelect';
 
 function Description(props) {
-  const select = useRef(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, handleCategory] = useState([]);
+
+  //const select = useRef(null);
   const input = useRef(null);
   const textarea = useRef(null);
 
+  useEffect(() => {
+    axios.get("/api/models/categories",
+    ).then(res => {
+      console.log(res);
+      const result = res.data.map((category) => {
+        return {label: category, value: category}
+      });
+      console.log(result)
+      setCategories(result)
+    }).catch((err) => console.log(err));
+  }, []);
+
+
   const saveDescription = () => {
+    console.log(selectedCategory);
     let payload = {
       modelId: props.modelId,
       author: input.current.value,
-      category: select.current.value,
+      category: selectedCategory.value,
       description: textarea.current.value
     };
-    console.log(payload)
-
-    axios.post("/api/models/update/model:" + props.modelId + "/information", payload).then((res) => {
+    axios.post("/api/models/update/model:" + props.modelId + "/information",
+      payload, {
+        headers: {'Authorization': localStorage.getItem("token")},
+      }).then((res) => {
       console.log(res);
     })
   };
@@ -28,24 +48,22 @@ function Description(props) {
 
     <div className="rowSpaceAround">
 
-      <div className="FlexStart">
+      <div className="columnFlexStart">
         <p className="text">Categories</p>
-        <select ref={select} id="category" className="select">
-          <option selected disabled hidden>Choose here</option>
-          {props.categories.map((category) => {
-            return <option>{category}</option>
-          })
-          })
-        </select>
+        <Select
+          styles={reactSelectStyles}
+          options={categories}
+          onChange={(selected) => handleCategory(selected)}
+        />
       </div>
 
-      <div className="FlexStart">
+      <div className="columnFlexStart">
         <p className="text">Author</p>
         <input disabled ref={input} id="author" className="input" value={props.username}/>
       </div>
     </div>
 
-    <div className="FlexStart">
+    <div className="columnFlexStart">
       <p className="text">Description</p>
       <textarea ref={textarea} id="description" placeholder="Write some stuff here..."
                 className="textArea"/>
@@ -58,6 +76,7 @@ function Description(props) {
 
   </div>
 }
+
 
 const mapStateToProps = (state) => ({
   files: state.reducer.files,

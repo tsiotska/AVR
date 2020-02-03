@@ -1,0 +1,73 @@
+@import "../source/variables";
+@import "../source/mixins";
+
+.collectionsPage {
+  @include flex-column-space-around;
+  @include backgroundOfPage;
+}
+
+.cardsWrapper {
+  @include flex-space-around;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  height: 250px;
+  border: 1px solid white;
+}
+
+.screenWrapper {
+  position: relative;
+  display: flex;
+}
+
+.screen {
+  width: 300px;
+  height: 200px;
+}
+
+.dandruff {
+  position: absolute;
+  z-index: 0;
+}
+
+/*
+.typeahead {
+position: relative;
+z-index: 0;
+overflow: hidden;
+width: 180px;
+height: 45px;
+padding: 3px;
+background-color: $green-helpful !important;
+color: $green-helpful !important;
+
+&::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 25%;
+  height: 200%;
+  width: 200%;
+  background-repeat: no-repeat;
+  background-size: 50% 50%, 50% 50%;
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+  animation: rotate 4s linear infinite;
+}
+
+&:active {
+  outline: none;
+}
+}
+
+
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}*/

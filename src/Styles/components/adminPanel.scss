@@ -1,11 +1,35 @@
 @import "../source/mixins";
 
 .panelWrapper {
-  position: absolute;
+  @include backgroundOfPage;
   @include flex-space-around;
+  padding: 20px;
+}
+
+.modelHolder {
+  @include borderGradient;
+  position: relative;
+  display: flex;
+  width: 40vw;
+  height: 60vh;
+}
+
+.descriptionHolder {
+  @include flex-center;
+  position: relative;
   width: 100%;
   height: 100%;
-  padding: 20px;
+}
+
+.absoluteText {
+  position: absolute;
+  z-index: 1;
+}
+
+.screenBtn, .screenBtn:hover {
+  position: absolute;
+  z-index: 1;
+  right: 0;
 }
 
 @media screen and (max-width: 720px) {

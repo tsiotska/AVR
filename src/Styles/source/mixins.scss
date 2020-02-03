@@ -37,6 +37,14 @@
   font-weight: $font-weight;
 }
 
+@mixin backgroundOfPage {
+  display: flex;
+  width: 100%;
+ // padding-top: 80px;
+  background: linear-gradient(to right, #0a2111, $green-helpful, transparent);
+  box-shadow: $box-shadow;
+}
+
 @mixin borderGradient {
   border-width: 3px;
   border-style: solid;
@@ -53,15 +61,15 @@
   position: relative;
   @include flex-center;
   @include font-stack;
-  background-color: $green-helpful;
+  background-color: transparent;
   height: 60px;
   width: 300px;
   padding: 10px;
   resize: none;
   text-decoration: none;
   outline: none;
-  border: none;
-  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+  border: 1px solid #c0f0de;
+  box-shadow: $box-shadow;;
 }
 
 @mixin input {
@@ -74,9 +82,10 @@
   resize: none;
   text-decoration: none;
   outline: none;
-  border: none;
-  background-color: $green-helpful;
-  box-shadow: 0 0 8px 3px $backgrounds-rgba-color;
+  box-sizing: border-box;
+  border: 1px solid #c0f0de;
+  background-color: transparent;
+  box-shadow: $box-shadow;
 }
 
 @mixin button {
@@ -122,6 +131,8 @@
   position: relative;
   box-shadow: 0 0 0 0 rgba(94, 181, 181, 0.7);
 
+  color: $text-color;
+  text-decoration: none;
   background-size: cover;
   background-repeat: no-repeat;
   cursor: pointer;

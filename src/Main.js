@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom
 import {connect} from "react-redux";
 
 import axios from "axios";
-import CollectionPage from "./Pages/CollectionPage"
+import CollectionPage from "./Pages/Collections/CollectionPage"
 import ModalWindow from "./Elements/ModalWindow/modalWindow"
 import UserInfo from "./Pages/myCabinet/UserInfo";
 import Header from './Elements/Header/Header';
@@ -20,6 +20,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
+
     this.vantaEffect = VANTA.WAVES({
       el: this.yourElement.current,
       color: 0x153c09,

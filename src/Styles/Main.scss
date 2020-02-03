@@ -13,6 +13,11 @@
 @import "components/adminPanel";
 @import "components/Description";
 @import "components/userInfoPage";
+@import "components/Collections.scss";
+
+* {
+  box-sizing: unset;
+}
 
 html, body {
   @include font-stack;
@@ -35,7 +40,10 @@ html, body {
 }
 
 .Route {
-  padding-top: 80px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .Background {
@@ -49,23 +57,29 @@ html, body {
   @include flex-center;
   flex-direction: column;
   padding: 30px;
-  margin: 30px;
+  margin: 5px;
 }
 
-.FlexStart {
+.columnFlexStart {
   @include flex-start;
   flex-direction: column;
+}
+
+.rowFlexStart {
+  @include flex-start;
+  flex-direction: row;
 }
 
 .centeredRow {
   @include flex-center;
   flex-direction: row;
-  padding: 30px;
-  margin: 30px;
+  width: 100%;
+  margin: 5px;
 }
 
 .rowSpaceAround {
   @include flex-space-around;
+ // flex-wrap: wrap;
   width: 100%;
   padding: 30px;
 }
@@ -87,6 +101,11 @@ html, body {
 
 .text {
   @include font-stack;
+  font-size: 14px;
+}
+
+.label {
+  @include font-stack;
   font-size: 16px;
 }
 
@@ -99,11 +118,24 @@ html, body {
   display: none;
 }
 
-.input, .select {
+.input {
   @include input;
+}
+
+.input:hover, .textArea:hover {
+  border-color: #d6d6d6;
+}
+
+.input:active, .textArea:active {
+  outline: 1px solid rgb(250, 190, 14);
 }
 
 .textArea {
   @include textArea;
 }
 
+@media screen and (max-width: 720px) {
+  .Route {
+    padding-top: 80px;
+  }
+}

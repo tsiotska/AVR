@@ -25,18 +25,12 @@ class MobileHeader extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  auth: state.reducer.auth
+  //auth: state.reducer.auth
 });
 
 const mapDispatchToProps = (dispatch) => ({
   openSidebar: () => {
     dispatch({type: "OPEN_SIDEBAR"})
-  },
-  openModalWindow: (toggle) => {
-    dispatch({type: "OPEN_MODAL_WINDOW", toggle: toggle})
-  },
-  logOut: (data, auth) => {
-    dispatch({type: "SET_USER_DATA", data: data, auth: auth})
   }
 });
 
