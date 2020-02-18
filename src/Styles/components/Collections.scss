@@ -4,11 +4,13 @@
 .collectionsPage {
   @include flex-column-space-around;
   @include backgroundOfPage;
+  padding: 20px;
 }
 
 .cardsWrapper {
   @include flex-space-around;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .card {

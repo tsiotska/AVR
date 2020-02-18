@@ -32,8 +32,8 @@ function ModelsList(props) {
             <div className="dandruff">
               <i className="fas fa-search"/>
             </div>
-            <div className="cardFooter">{}</div>
           </div>
+          <div className="cardFooter">I am footer skeleton! Put here pretty data</div>
         </div>
       }
     )}

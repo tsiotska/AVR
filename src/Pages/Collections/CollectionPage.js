@@ -114,9 +114,9 @@ class CollectionPage extends React.Component {
         </div>
       </div>
 
-      <div className="">
+
         <ModelsList models={this.state.models}/>
-      </div>
+
 
     </div>)
   }

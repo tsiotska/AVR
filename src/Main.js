@@ -11,22 +11,16 @@ import Header from './Elements/Header/Header';
 import Home from './Pages/Home';
 import Sidebar from './Elements/Header/Sidebar';
 import PrivateRoute from './Elements/PrivateRoute/privateRoute';
-
+import {Howl, Howler} from 'howler';
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.yourElement = React.createRef();
+    this.state = {playMusic: true}
   }
 
   componentDidMount() {
-
-    this.vantaEffect = VANTA.WAVES({
-      el: this.yourElement.current,
-      color: 0x153c09,
-      THREE: THREE
-    });
-
     let token = localStorage.getItem("token");
     console.log(token);
     if (token) {
@@ -40,8 +34,29 @@ class Main extends React.Component {
           }
         ).catch((err) => console.log(err))
     }
+
+    this.vantaEffect = VANTA.WAVES({
+      el: this.yourElement.current,
+      color: 0x153c09,
+      THREE: THREE
+    });
+/*
+    this.sound = new Howl({
+      src: ['FonMusic.mp3'],
+      autoplay: true,
+      loop: true,
+      volume: 1,
+      onend: function () {
+        console.log('Finished!');
+      }
+    });
+    this.sound.play();*/
   }
 
+  toggleMusic = () => {
+    this.setState({playMusic: !this.state.playMusic});
+    //this.sound.stop()
+  };
 
   componentWillUnmount() {
     if (this.vantaEffect) {
@@ -67,7 +82,13 @@ class Main extends React.Component {
             {this.props.isUserInfoOpened ?
               <UserInfo/>
               : null}
-
+/*
+            <div className="Audio">
+              <div onClick={this.toggleMusic}>
+                <i className={this.state.playMusic ? "fas fa-play" : "fas fa-pause"}/>
+              </div>
+            </div>
+*/
             <div className="Route">
               <Switch>
                 <Route exact path="/">
