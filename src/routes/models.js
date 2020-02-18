@@ -3,7 +3,7 @@ const path = require('path');
 import * as fs from 'fs';
 import * as fsExtra from 'fs-extra';
 import {createModel, updateModel} from '../CRUDs/modelCRUD';
-import {verifyToken, checkAuth} from '../checkAuth';
+import {checkAuth} from '../checkAuth';
 
 //root defines a directory of model which client requires
 let root = "";
