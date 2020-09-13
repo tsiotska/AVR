@@ -49,7 +49,7 @@ app.get('/*', function (req, res) {
 });
 
 async function start() {
-  setUpConnection()
+  setUpConnection();
   app.listen(process.env.PORT, () => console.log("started at" + process.env.PORT));
 }
 

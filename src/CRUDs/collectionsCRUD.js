@@ -1,16 +1,35 @@
 import '../schemas/modelSchema';
 import {Model} from '../schemas/modelSchema';
 
-export function extractModelsData(field) {
-  return Model.find({}, {_id: 0, [field]: 1}, function (err, data) {
-    if (err) return console.log(err);
-    console.log("Successfully found ");
-  }).sort({field: 1}).distinct(field);
+export function extractModelsData(field, value, projection) {
+
+  if (projection) {
+    if (!Array.isArray(projection)) {
+      projection = [projection];
+    }
+    projection = projection.reduce(function (result, item) {
+      console.log("item");
+      result[item] = true;
+      return result;
+    }, {});
+  }
+
+  return Model.find({[field]: value},
+    {_id: 0, ...projection})
+    .then((data) => {
+        console.log(data);
+        return data;
+      }
+    ).catch((err) => console.log(err))
 }
 
+
 export function findCollection(type, value) {
-  return Model.find({[type]: value}, function (err, data) {
-    if (err) return console.log(err);
-    console.log("Successfully found ");
-  });
+  return Model.find({[type]: value})
+    .then((data) => {
+      console.log(data);
+      return data;
+    }
+  ).catch((err) => console.log(err))
 }
+
