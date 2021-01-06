@@ -20,21 +20,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/static', express.static(path.join(__dirname, '../client/build/')));
 
-app.get('/bundle.js', function (req, res) {
+app.get('/bundle', function (req, res) {
   res.sendFile(path.join((__dirname + '/../client/build/bundle.js')), function (err) {
     if (err) {
       res.status(500).send(err)
     }
   })
-  // res.sendFile(path.join('C:/Users/Vitaliy/Desktop/WebstormProjects/server/client/build/bundle.js'));
-});
-
-app.get('/manifest.json', function (req, res) {
-  res.sendFile(path.join(__dirname + '/../client/public/manifest.json'));
 });
 
 app.get('/style', function (req, res) {
+  console.log('get style')
   res.sendFile(path.join(__dirname + '/../client/build/style.css'));
+});
+
+
+app.get('/manifest.json', function (req, res) {
+  res.sendFile(path.join(__dirname + '/../client/public/manifest.json'));
 });
 
 app.use('/api/users', users);
