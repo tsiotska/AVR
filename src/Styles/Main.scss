@@ -41,7 +41,7 @@ html, body {
 
 .Route {
   display: flex;
-  align-items: center;
+  padding-top: 80px;
   height: 100%;
   width: 100%;
 }
@@ -79,7 +79,7 @@ html, body {
 
 .rowSpaceAround {
   @include flex-space-around;
- // flex-wrap: wrap;
+  // flex-wrap: wrap;
   width: 100%;
   padding: 30px;
 }

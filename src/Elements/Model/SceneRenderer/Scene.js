@@ -3,7 +3,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader'
 import OrbitControls from 'three-orbitcontrols';
-import PreLoader from '../../../Loading/PreLoader';
+import PreLoader from '../../Loading/PreLoader';
 import {connect} from "react-redux";
 
 //const side1 = require('../assets/skybox/skybox1.jpg');
@@ -31,6 +31,7 @@ class ThreeScene extends React.Component {
   }
 
   componentDidMount() {
+
     if (this.props.link) {
       this.scene = new this.THREE.Scene();
       this.width = this.ref.clientWidth;
@@ -104,10 +105,11 @@ class ThreeScene extends React.Component {
   };*/
 
   loadModel = () => {
-    console.log("FUCKING SHIT!!!")
+    console.log("Link")
     console.log(this.xhrLink)
 
     let loader = new GLTFLoader();
+
     this.setState({loading: true});
 
     loader.load(this.xhrLink, (gltf) => {
@@ -134,7 +136,9 @@ class ThreeScene extends React.Component {
             this.mixer.clipAction(clip).play();
           });
         }
+
         this.setState({loading: false});
+
         //this.props.readyForScreen();
         this.start();
       }, (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
@@ -211,14 +215,6 @@ const elementStyle = {
   height: '100%'
 };
 
-const mapStateToProps = (state) => ({
-  //files: state.reducer.files,
-});
 
-const mapDispatchToProps = (dispatch) => ({
-  /*readyForScreen: () => {
-    dispatch({type: "READY_FOR_SCREEN", flag: true})
-  }*/
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThreeScene);
+export default ThreeScene;

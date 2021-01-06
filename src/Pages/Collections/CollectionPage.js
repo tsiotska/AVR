@@ -27,20 +27,20 @@ class CollectionPage extends React.Component {
   }
 
   extractDataForSelect = () => {
-    return axios.get("/api/collections/extract/" + this.state.selectedType.value,
+    return axios.get("/api/collections/extract",
+      {params: {projection: this.state.selectedType.value}}
     ).then(res => {
       console.log("Your source: ");
       console.log(res);
       this.setState({
         queries: res.data.map((query) => {
-          return {value: query, label: query}
+          return {value: query[Object.keys(query)[0]], label: query[Object.keys(query)[0]]}
         })
       })
     }).catch((err) => console.log(err))
   };
 
   searchModels = () => {
-    console.log("Searching..")
     const payload = JSON.stringify(this.state.selectedQueries.map((item) => {
         return item.value
       }
@@ -50,7 +50,8 @@ class CollectionPage extends React.Component {
     axios.get("/api/collections", {
         params: {
           type: this.state.selectedType.value,
-          value: payload
+          value: payload,
+          projection: ["_id", "modelId", "author", "description"]
         }
       }
     ).then(res => {
@@ -114,9 +115,7 @@ class CollectionPage extends React.Component {
         </div>
       </div>
 
-
-        <ModelsList models={this.state.models}/>
-
+      <ModelsList models={this.state.models}/>
 
     </div>)
   }

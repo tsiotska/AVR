@@ -11,18 +11,19 @@ import Header from './Elements/Header/Header';
 import Home from './Pages/Home';
 import Sidebar from './Elements/Header/Sidebar';
 import PrivateRoute from './Elements/PrivateRoute/privateRoute';
-import {Howl, Howler} from 'howler';
+//import VANTA from 'vanta';
+
+//import {Howl, Howler} from 'howler';
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.yourElement = React.createRef();
+    this.Vanta = React.createRef();
     this.state = {playMusic: true}
   }
 
   componentDidMount() {
     let token = localStorage.getItem("token");
-    console.log(token);
     if (token) {
       axios.get("/api/users/profile", {headers: {'Authorization': token}})
         .then((response) => {
@@ -35,8 +36,10 @@ class Main extends React.Component {
         ).catch((err) => console.log(err))
     }
 
+
+
     this.vantaEffect = VANTA.WAVES({
-      el: this.yourElement.current,
+      el: this.Vanta.current,
       color: 0x153c09,
       THREE: THREE
     });
@@ -68,7 +71,7 @@ class Main extends React.Component {
     return (
       <div className="Wrapper">
 
-        <div className="Background" ref={this.yourElement}/>
+        <div className="Background" ref={this.Vanta}/>
 
         <div className="Components">
           <Router>
